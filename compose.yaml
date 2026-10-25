@@ -18,7 +18,7 @@ x-api-environment: &api-environment
   CL_DB_PASSWORD: ${CL_DB_PASSWORD:?Initialize .env using scripts/init-env.ps1}
 
 x-api-base: &api-base
-  image: contribution-ledger-api:0.17.5-phase17
+  image: contribution-ledger-api:0.17.8-phase17
   build:
     context: .
     dockerfile: infra/api.Dockerfile
@@ -81,7 +81,7 @@ services:
       db: {condition: service_healthy}
     restart: "no"
   web:
-    image: contribution-ledger-web:0.17.5-phase17
+    image: contribution-ledger-web:0.17.8-phase17
     build:
       context: .
       dockerfile: infra/web.Dockerfile

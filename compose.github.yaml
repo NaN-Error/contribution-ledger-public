@@ -22,7 +22,7 @@ services:
     volumes:
       - *github-mount
   github-worker:
-    image: contribution-ledger-api:0.16.2-phase16
+    image: contribution-ledger-api:0.17.8-phase17
     build:
       context: .
       dockerfile: infra/api.Dockerfile
@@ -52,7 +52,7 @@ services:
 
   github-provision:
     profiles: [tools]
-    image: contribution-ledger-api:0.16.2-phase16
+    image: contribution-ledger-api:0.17.8-phase17
     user: "0:0"
     network_mode: none
     command: [python, -m, app.security.secrets.provision]

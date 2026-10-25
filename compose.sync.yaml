@@ -20,7 +20,7 @@ x-sync-environment: &sync-environment
   CL_JOBS_BROKER_URL: redis://:${CL_JOBS_BROKER_PASSWORD:?Run sync init to generate a separate local password}@github-broker:6379/0
 
 x-sync-service: &sync-service
-  image: contribution-ledger-jobs:0.16.2-phase16
+  image: contribution-ledger-jobs:0.17.8-phase17
   build: {context: ., dockerfile: infra/api.Dockerfile, target: jobs}
   environment: *sync-environment
   volumes:
@@ -82,7 +82,7 @@ services:
     labels: {com.contribution-ledger.optional: github}
     restart: unless-stopped
   webhook-gateway:
-    image: contribution-ledger-webhook:0.16.2-phase16
+    image: contribution-ledger-webhook:0.17.8-phase17
     build: {context: ., dockerfile: infra/webhook.Dockerfile}
     ports: ['127.0.0.1:${CL_WEBHOOK_PORT:-8010}:8010']
     depends_on:

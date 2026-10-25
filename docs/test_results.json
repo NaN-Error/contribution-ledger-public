@@ -45,10 +45,37 @@
     "Human pilot or real model quality",
     "Production hosting or real finance"
   ],
-  "fresh_package_startup": "Verified separately in the release notes after archive assembly.",
+  "fresh_package_startup": {
+    "status": "passed",
+    "scope": "Extracted Windows release; isolated fresh native PostgreSQL data; startup, ready/dashboard HTTP, repeat process reuse, bundled Pillow and retained keys after stop.",
+    "clean_windows_vm_claimed": false
+  },
   "windows_operator": {
     "passed": 18,
     "failed": 0,
     "download_or_installer_executed": false
+  },
+  "repository_browser": {
+    "status": "passed",
+    "synthetic_only": true,
+    "native_postgresql": true,
+    "scope": "Repository capture, contributor/evidence drilldowns, manual proposals, correction, scoped sharing, project isolation and mobile layout; no award or payment."
+  },
+  "release_repair_tests": {
+    "passed": 59,
+    "failed": 0,
+    "scope": "Release guards and paired recovery; overlaps earlier selections."
+  },
+  "public_ci_initial": {
+    "commit": "983684b29d3015ed83473d509db9cd8bd268d274",
+    "backend_passed": 1459,
+    "backend_failed": 0,
+    "backend_skipped": 0,
+    "frontend_passed": 449,
+    "later_failures": [
+      "Browser fixture retained an old source-read label; corrected and passed locally.",
+      "Recovery helper image tag differed from the built Compose image; aligned with VERSION and regression tested."
+    ],
+    "final_ci": "See Actions for the current follow-up run."
   }
 }

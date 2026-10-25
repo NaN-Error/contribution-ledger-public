@@ -10,7 +10,7 @@ x-ai-environment: &ai-environment
   CL_AI_MASTER_KEY_FILE: /var/lib/contribution-ledger/ai-master/master.key
 
 x-ai-worker-base: &ai-worker-base
-  image: contribution-ledger-api:0.16.2-phase16
+  image: contribution-ledger-api:0.17.8-phase17
   build: {context: ., dockerfile: infra/api.Dockerfile, target: base}
   init: true
   security_opt: [no-new-privileges:true]

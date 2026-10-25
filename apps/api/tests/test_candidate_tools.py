@@ -161,3 +161,13 @@ def test_onboarding_document_paths_exist():
     source=(ROOT/'apps/web/src/lib/onboarding.ts').read_text()
     for name in re.findall(r"documentation: '([^']+)'",source):
         assert (ROOT/name).is_file(),name
+
+
+def test_recovery_image_matches_the_version_built_by_compose():
+    import re
+    version=(ROOT/'VERSION').read_text().strip()
+    recovery=tool('recovery')
+    assert recovery.API_IMAGE=='contribution-ledger-api:'+version
+    for path in ROOT.glob('compose*.yaml'):
+        images=re.findall(r'image: (contribution-ledger-[\w-]+:[^\s]+)',path.read_text())
+        assert all(image.endswith(':'+version) for image in images),path.name

@@ -2,7 +2,7 @@
 # Use scripts/staging.ps1 / staging.sh; do not publish this through a generic tunnel.
 name: contribution-ledger-staging
 x-runtime: &runtime
-  image: contribution-ledger-api:0.16.2-phase16
+  image: contribution-ledger-api:0.17.8-phase17
   build: {context: ., dockerfile: infra/api.Dockerfile, target: base}
   init: true
   read_only: true
@@ -73,7 +73,7 @@ services:
       timeout: 6s
       retries: 20
   web:
-    image: contribution-ledger-web:0.16.2-phase16
+    image: contribution-ledger-web:0.17.8-phase17
     build: {context: ., dockerfile: infra/web.Dockerfile, target: runtime}
     environment:
       CL_API_TARGET: http://api:8000

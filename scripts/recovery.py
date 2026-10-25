@@ -22,7 +22,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'apps/api'))
 from app.operations.archive import create_bundle,unpack_bundle,validate_pair,keygen,read_key,BundleError
 from app.security.secrets.encrypted import private_path
-API_IMAGE='contribution-ledger-api:0.17.4-phase17'
+API_IMAGE='contribution-ledger-api:'+(ROOT/'VERSION').read_text(encoding='utf-8').strip()
 DATA_VOLUMES={'evidence_data','ai_credentials'}
 SECRET_VOLUMES={'auth_master','ai_master','github_secrets'}
 KNOWN_VOLUMES=DATA_VOLUMES|SECRET_VOLUMES|{'postgres_data'}

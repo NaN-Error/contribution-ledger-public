@@ -10,3 +10,6 @@
 - Refresh security pins for Pillow, certifi and Vite.
 - Exclude local test reports and machine-specific development history; clarify
   current startup, privacy and release limitations.
+
+- Align Docker image tags and recovery tooling with the current source version.
+- Update the repository browser fixture for the current source-read confirmation.

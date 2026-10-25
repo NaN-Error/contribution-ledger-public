@@ -51,8 +51,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 605,
-      "sha256": "186b071d4a53f50bbbaaff48fa4a4fdc62c0632e18a4d8c37adf67559c03acdc"
+      "bytes": 768,
+      "sha256": "944baa7f72a364fe244713358f5394fc2093e366a0186a692e8305f41f2691d8"
     },
     {
       "path": "CONTRIBUTING.md",
@@ -1341,8 +1341,8 @@
     },
     {
       "path": "apps/api/tests/test_candidate_tools.py",
-      "bytes": 8431,
-      "sha256": "f25bbcbd28852eacbc8606443579f8a2c1355343814e11f38731d83ea6ea34e8"
+      "bytes": 8868,
+      "sha256": "fcb3a12d75cb1fb3993fb0176248a6097d09ba78da296b2b9e25b744986d34fa"
     },
     {
       "path": "apps/api/tests/test_config.py",
@@ -2312,27 +2312,27 @@
     {
       "path": "compose.ai.yaml",
       "bytes": 2898,
-      "sha256": "03ab8061a495acf41af17e866d82d21e2ef11fa8d4cf86644c79b57632480815"
+      "sha256": "69022fb5512d7995ecf20c76236140df35b9184460fabc9a939ff8b0f629ebd4"
     },
     {
       "path": "compose.github.yaml",
       "bytes": 2538,
-      "sha256": "cd5656ad3427166289ea39d930ffe69289e38aa40919036f916a80e8c0691ead"
+      "sha256": "722b689178675d662f67003237dc689fdc69159343294733a0cb4ff479c94ce2"
     },
     {
       "path": "compose.staging.yaml",
       "bytes": 4090,
-      "sha256": "5c59385fc78df878fd79b471f82e9884b8bbf84aaea532cea7a4305a4220d3fb"
+      "sha256": "85b4c2e388a75c782fc17e02eb347e01095e4356dccbcf8e63f34be4595a5cb0"
     },
     {
       "path": "compose.sync.yaml",
       "bytes": 3898,
-      "sha256": "ee7ce5b24fccfb14a80e511293ff2bb357e8c0d0b107df64cd2ef096c9c4b770"
+      "sha256": "46686a3bbbc0f45961aad1647b358400b6509cd41a107b9624a53cfe4b244e9a"
     },
     {
       "path": "compose.yaml",
       "bytes": 3459,
-      "sha256": "c2600c84c8ab7d65906b8a262f1f6281dd2b55a6f6904cceb754a1b6bcccf729"
+      "sha256": "5411ae4b6b30f7bcf8a8b46fff566a79cd5150dfca4a78dc38472b248f8fd387"
     },
     {
       "path": "docs/account_access.md",
@@ -2676,8 +2676,8 @@
     },
     {
       "path": "docs/test_results.json",
-      "bytes": 1886,
-      "sha256": "6c4344be798a79124f2291089a3d748c3d5daf00a6ce4ee78b80ff1efe238cd6"
+      "bytes": 2995,
+      "sha256": "a783c35cede1557c112e72e025392111819a471dbbdad2de3549aac2e0e0ddca"
     },
     {
       "path": "docs/testing.md",
@@ -3051,8 +3051,8 @@
     },
     {
       "path": "scripts/recovery.py",
-      "bytes": 16988,
-      "sha256": "9fb3caa89cf9638c12c5fd3581629ce8c04dfbee7f718dae72bc9f76d3480f78"
+      "bytes": 17027,
+      "sha256": "7d998ac18bcd2b9c8a6d8f20256019a764f2a10b1d85cdefba8b27581c9fd6db"
     },
     {
       "path": "scripts/replay_distribution.py",
@@ -3246,8 +3246,8 @@
     },
     {
       "path": "tests/e2e/repository_analysis_acceptance.py",
-      "bytes": 23509,
-      "sha256": "808d308154ad040673d8ada2d71814f1148b97ad8b5d789eaa63d504ac272c84"
+      "bytes": 23495,
+      "sha256": "8e9561b12902cccb9ce57e8975c9bd3b71e582d3e754027dca7996f4c724d06b"
     },
     {
       "path": "tests/e2e/simulator_smoke.py",
