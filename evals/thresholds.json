@@ -1,0 +1,8 @@
+{
+  "version": "provisional-synthetic-thresholds-v1",
+  "minimum_synthetic_agreement": 0.9,
+  "maximum_changed_pair_rate": 0.05,
+  "human_reviewed": false,
+  "independent_model_validation": false,
+  "purpose": "Provisional regression alerts only; freeze before any authorized holdout measurement. Never authorize deployment."
+}

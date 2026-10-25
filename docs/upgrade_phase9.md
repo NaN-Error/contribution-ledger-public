@@ -1,0 +1,14 @@
+# Upgrade to phase 9 without losing data
+
+Source baseline: actual phase-8 ZIP, 377 files. Target: `0.9.0-phase9`. User testing is deferred; these are instructions for later verification, not evidence that the upgrade was executed here.
+
+1. Keep a private backup of `.env`, PostgreSQL, evidence bytes, and any configured GitHub secret volume/staging/recovery material. Preserve your previous source archive and applied migration files. The Redis broker introduced here is disposable; its state is not a backup of tasks or accounting.
+2. Stop the app and all optional import consumers before migration. Updated `start.ps1`/`manage.sh start` and `sync start` now do this explicitly. An older phase-8 worker is also located by its Compose project/service label. Verify stop succeeded; do not migrate while an old worker still writes.
+3. Extract the complete phase-9 `contribution-ledger/` tree into the project directory. Do not overwrite your real `.env` from an example and do not delete volumes. No prior source file is intentionally deleted. Source upgrades do not resolve separate database backup compatibility requirements.
+4. For the manual workflow, run the usual `scripts/start.ps1` (or `bash scripts/manage.sh start`). Existing owners sign in normally. It applies additive `0009_github_sync`; migrations 0001–0008 remain byte-for-byte unchanged. No repository schedule, receipt, seed, credit or payment is created at startup. Existing source/import history remains intact.
+5. For optional synchronization, follow `github_sync.md`: generate a distinct broker/signing secret, provision privately, explicitly start the new overlay, then enable a reviewed repository schedule. Old historical jobs retain their checkpoints and can be consumed by the new transport after current authority checks. Do not run the legacy polling and Celery transports intentionally together.
+6. Verify native migrations, scoped access, stopped old containers, failed/healthy readiness, persistence, signed event deduplication and a broker restart using `testing_phase9.md`. Then continue ordinary work. A successful source extraction is not verification.
+
+Migration adds six tables, six outbox dispatch fields, a repository cooldown and the import capture-mode field. Receipt/run records reject ordinary update/delete (and PostgreSQL truncate), and nonempty downgrade is refused. New latest-observation pointers are filled as sources are fetched; old records are not falsely assigned a present observation date by migration. Existing jobs default to historical mode. Financial/contribution history is untouched.
+
+Reverting source while leaving migration 0009 applied is not a supported rollback. Use a reviewed full backup restore if necessary; do not erase receipt/import history to force a downgrade. Native restore/drill remains a future verification gate.

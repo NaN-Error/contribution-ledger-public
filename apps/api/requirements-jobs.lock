@@ -1,0 +1,18 @@
+# Optional Linux worker environment, added to requirements.lock, not the base API.
+# Exact metadata-derived candidate pins; download/install/broker verification remains open.
+# Kombu 5.6.2 redis extra requires redis>=4.5.2,<6.5 (excluding 4.5.5/5.0.2).
+# Base click, packaging (included below), python-dateutil and six satisfy the common graph.
+amqp==5.3.1
+billiard==4.2.4
+celery==5.6.3
+click-didyoumean==0.3.1
+click-plugins==1.1.1.2
+click-repl==0.3.0
+kombu==5.6.2
+packaging==26.0
+prompt-toolkit==3.0.52
+redis==6.4.0
+tzdata==2026.2
+tzlocal==5.3.1
+vine==5.1.0
+wcwidth==0.2.14

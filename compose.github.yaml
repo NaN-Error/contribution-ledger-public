@@ -1,0 +1,77 @@
+# Optional, explicit GitHub profile. Combine with compose.yaml; never publish the worker.
+# Only non-secret App IDs belong in .env. Mounted secret files are provisioned by the operator.
+x-github-environment: &github-environment
+  CL_GITHUB_ENABLED: "true"
+  CL_GITHUB_APP_ID: ${CL_GITHUB_APP_ID:?Set the non-secret App ID in .env}
+  CL_GITHUB_CLIENT_ID: ${CL_GITHUB_CLIENT_ID:?Set the non-secret client ID in .env}
+  CL_GITHUB_CALLBACK_URL: http://127.0.0.1:${CL_WEB_PORT:-5173}/github/callback
+  CL_GITHUB_SECRET_ROOT: /run/ledger-secrets
+  CL_GITHUB_AUTHORIZATION_HOURS: ${CL_GITHUB_AUTHORIZATION_HOURS:-24}
+  CL_GITHUB_PROJECT_QUOTA_BYTES: ${CL_GITHUB_PROJECT_QUOTA_BYTES:-134217728}
+
+x-github-mount: &github-mount
+  type: volume
+  source: github_secrets
+  target: /run/ledger-secrets
+  read_only: true
+
+services:
+  api:
+    environment:
+      <<: *github-environment
+    volumes:
+      - *github-mount
+  github-worker:
+    image: contribution-ledger-api:0.16.2-phase16
+    build:
+      context: .
+      dockerfile: infra/api.Dockerfile
+      target: base
+    environment:
+      <<: *github-environment
+      CL_ENVIRONMENT: ${CL_ENVIRONMENT:-development}
+      CL_DB_HOST: db
+      CL_DB_PORT: "5432"
+      CL_DB_NAME: ${CL_DB_NAME:-contribution_ledger}
+      CL_DB_USER: ${CL_DB_USER:-contribution_ledger}
+      CL_DB_PASSWORD: ${CL_DB_PASSWORD:?Preserve the existing local database password}
+      CL_ALLOWED_ORIGINS: '["http://127.0.0.1:${CL_WEB_PORT:-5173}","http://localhost:${CL_WEB_PORT:-5173}"]'
+    command: [python, -m, app.workers.github, --loop]
+    volumes:
+      - *github-mount
+    depends_on:
+      db: {condition: service_healthy}
+      api: {condition: service_healthy}
+    init: true
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    read_only: true
+    tmpfs: [/tmp]
+    labels: {com.contribution-ledger.optional: github}
+    restart: unless-stopped
+
+  github-provision:
+    profiles: [tools]
+    image: contribution-ledger-api:0.16.2-phase16
+    user: "0:0"
+    network_mode: none
+    command: [python, -m, app.security.secrets.provision]
+    environment:
+      PYTHONDONTWRITEBYTECODE: "1"
+    volumes:
+      - type: bind
+        source: ./.local/github-secrets
+        target: /source-secrets
+        read_only: true
+        bind:
+          create_host_path: false
+      - github_secrets:/target-secrets
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    cap_add: [CHOWN, DAC_OVERRIDE, FOWNER]
+    read_only: true
+    tmpfs: [/tmp]
+    restart: "no"
+
+volumes:
+  github_secrets:

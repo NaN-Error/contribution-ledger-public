@@ -1,0 +1,100 @@
+# Explicit local synchronization: combine compose.yaml + compose.github.yaml + this file.
+# Base-only startup does not enable this overlay. Never publish Redis/worker/database ports.
+x-sync-environment: &sync-environment
+  CL_ENVIRONMENT: ${CL_ENVIRONMENT:-development}
+  CL_DB_HOST: db
+  CL_DB_PORT: "5432"
+  CL_DB_NAME: ${CL_DB_NAME:-contribution_ledger}
+  CL_DB_USER: ${CL_DB_USER:-contribution_ledger}
+  CL_DB_PASSWORD: ${CL_DB_PASSWORD:?Preserve the local database password}
+  CL_ALLOWED_ORIGINS: '["http://127.0.0.1:${CL_WEB_PORT:-5173}","http://localhost:${CL_WEB_PORT:-5173}"]'
+  CL_GITHUB_ENABLED: "true"
+  CL_GITHUB_SYNC_ENABLED: "true"
+  CL_GITHUB_WEBHOOK_ENABLED: ${CL_GITHUB_WEBHOOK_ENABLED:-false}
+  CL_GITHUB_APP_ID: ${CL_GITHUB_APP_ID:?Configure the non-secret GitHub App ID}
+  CL_GITHUB_CLIENT_ID: ${CL_GITHUB_CLIENT_ID:?Configure the non-secret GitHub client ID}
+  CL_GITHUB_CALLBACK_URL: http://127.0.0.1:${CL_WEB_PORT:-5173}/github/callback
+  CL_GITHUB_SECRET_ROOT: /run/ledger-secrets
+  CL_GITHUB_AUTHORIZATION_HOURS: ${CL_GITHUB_AUTHORIZATION_HOURS:-24}
+  CL_GITHUB_PROJECT_QUOTA_BYTES: ${CL_GITHUB_PROJECT_QUOTA_BYTES:-134217728}
+  CL_JOBS_BROKER_URL: redis://:${CL_JOBS_BROKER_PASSWORD:?Run sync init to generate a separate local password}@github-broker:6379/0
+
+x-sync-service: &sync-service
+  image: contribution-ledger-jobs:0.16.2-phase16
+  build: {context: ., dockerfile: infra/api.Dockerfile, target: jobs}
+  environment: *sync-environment
+  volumes:
+    - type: volume
+      source: github_secrets
+      target: /run/ledger-secrets
+      read_only: true
+  depends_on:
+    db: {condition: service_healthy}
+    api: {condition: service_healthy}
+    github-broker: {condition: service_healthy}
+  init: true
+  security_opt: [no-new-privileges:true]
+  cap_drop: [ALL]
+  read_only: true
+  tmpfs: [/tmp]
+  networks: [default, sync_broker]
+  labels: {com.contribution-ledger.optional: github}
+  restart: unless-stopped
+
+services:
+  api:
+    environment:
+      CL_GITHUB_SYNC_ENABLED: "true"
+      CL_GITHUB_WEBHOOK_ENABLED: ${CL_GITHUB_WEBHOOK_ENABLED:-false}
+  # Do not start the phase-8 polling worker with this overlay. Source IDs retain
+  # the same database checkpoints but only the optional Celery transport runs.
+  github-worker:
+    profiles: [legacy-poller]
+  github-celery:
+    <<: *sync-service
+    command: [python, -m, celery, -A, app.jobs.celery_app:celery_app, worker, --loglevel=WARNING, --concurrency=2, --without-gossip, --without-mingle, --without-heartbeat, -Q, github-source]
+  github-scheduler:
+    <<: *sync-service
+    command: [python, -m, app.workers.scheduler, --loop]
+  github-broker:
+    image: redis:7.4.11-bookworm
+    user: redis
+    entrypoint: [/bin/sh, /opt/ledger/redis-start.sh]
+    environment:
+      CL_JOBS_BROKER_PASSWORD: ${CL_JOBS_BROKER_PASSWORD:?Run sync init}
+    volumes:
+      - type: bind
+        source: ./infra/redis-start.sh
+        target: /opt/ledger/redis-start.sh
+        read_only: true
+        bind: {create_host_path: false}
+    healthcheck:
+      test: [CMD-SHELL, 'REDISCLI_AUTH="$$CL_JOBS_BROKER_PASSWORD" redis-cli ping | grep -q PONG']
+      interval: 5s
+      timeout: 3s
+      retries: 15
+    networks: [sync_broker]
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    read_only: true
+    tmpfs: [/tmp]
+    mem_limit: 256m
+    labels: {com.contribution-ledger.optional: github}
+    restart: unless-stopped
+  webhook-gateway:
+    image: contribution-ledger-webhook:0.16.2-phase16
+    build: {context: ., dockerfile: infra/webhook.Dockerfile}
+    ports: ['127.0.0.1:${CL_WEBHOOK_PORT:-8010}:8010']
+    depends_on:
+      api: {condition: service_healthy}
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    read_only: true
+    tmpfs: [/tmp]
+    init: true
+    labels: {com.contribution-ledger.optional: github}
+    restart: unless-stopped
+
+networks:
+  sync_broker:
+    internal: true

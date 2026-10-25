@@ -1,0 +1,957 @@
+{
+  "schema_version": "1.1",
+  "planning_version": "0.2",
+  "project": "contribution-ledger",
+  "created_at": "2026-09-13",
+  "implementation_status": "installed_verified_pending_user_testing",
+  "current_phase": "P17",
+  "next_batch": "P17C",
+  "status_values": [
+    "not_started",
+    "in_progress",
+    "implemented_pending_verification",
+    "awaiting_external_validation",
+    "blocked",
+    "verified",
+    "checklist_prepared_real_use_disabled",
+    "evaluation_tools_implemented_human_pilot_pending",
+    "implemented_offline_and_mock_checks_pending_live_verification",
+    "implemented_pending_browser_verification",
+    "implemented_synthetic_references_pending_human_validation",
+    "internal_source_candidate_installed_release_unverified",
+    "observation_tools_prepared_human_pilot_not_started",
+    "packaged_pending_clean_build_native_install_and_upgrade",
+    "installed_verified_pending_user_testing"
+  ],
+  "phase_count": 17,
+  "batch_count": 51,
+  "phases": [
+    {
+      "id": "P01",
+      "number": 1,
+      "title": "Project foundation and local startup",
+      "status": "implemented_pending_verification",
+      "depends_on": [],
+      "goal": "Create a real, runnable starting project, not a mockup. Establish the Windows/VS Code workflow, baseline decisions, automated checks, and a clear record of what has and has not been implemented.",
+      "batches": [
+        {
+          "id": "P01A",
+          "title": "Baseline, environment, and repository",
+          "status": "implemented_pending_verification",
+          "deliverables": "Create the monorepo, README, environment example, ignore rules, pinned dependency manifests and lockfiles, PowerShell helper scripts, development-plan documents, and a doctor command. Record the selected compatible runtime versions in an architecture decision. Build a local-only container configuration; use synthetic data and no external credentials.",
+          "verification": "The doctor command reports missing tools with actionable messages. A clean installation uses committed dependency locks. Secret files, database volumes, and local uploads are excluded from version control and delivery ZIPs."
+        },
+        {
+          "id": "P01B",
+          "title": "API, database, and migrations",
+          "status": "implemented_pending_verification",
+          "deliverables": "Create FastAPI startup, validated configuration, PostgreSQL connection management, a migration baseline, health/readiness endpoints, request IDs, and sanitized error responses. Introduce the outbox/job and storage interfaces without starting external integrations. Include an explicit development-only seed/reset operation.",
+          "verification": "Fresh migrations succeed against PostgreSQL. Re-running them is safe. Readiness becomes unhealthy when the database is unavailable. Reset refuses a non-development environment and never runs during normal startup."
+        },
+        {
+          "id": "P01C",
+          "title": "Browser shell and test harness",
+          "status": "implemented_pending_verification",
+          "deliverables": "Create the React/TypeScript shell, navigation structure, accessible shared inputs, loading/error/empty states, and a status screen that queries the real API. Add unit-test, API integration-test, frontend build, and browser smoke-test commands to CI. Document start, stop, logs, and recovery.",
+          "verification": "The browser shows actual API status rather than a hardcoded green indicator. Startup works from the supplied root directory. Container restart preserves a seeded database record. The application binds to localhost by default."
+        }
+      ],
+      "planned_module_paths": [
+        "apps/api/app/core/",
+        "apps/api/app/db/",
+        "apps/api/app/main.py",
+        "apps/api/migrations/",
+        "apps/web/src/",
+        "docs/",
+        "infra/",
+        "scripts/",
+        "tests/"
+      ],
+      "acceptance_tests": [
+        "A clean checkout reaches the status page using documented commands.",
+        "No API key, GitHub installation, public domain, or paid provider is required.",
+        "Implemented tests and locally unverified tests are separately reported."
+      ],
+      "demo": "Open the app locally, inspect healthy services, create a test record through the seed operation, restart, and confirm persistence.",
+      "excluded": "No real login, contribution percentages, AI evaluator, or financial statements. Hidden future navigation does not pretend these features work.",
+      "verification_evidence": "docs/test_results.json; docs/releases/phase1.md; environment-dependent checks remain open.",
+      "current_verification_evidence": "docs/test_results.json and verification/README.md supersede earlier unavailable-service notes. Phase-level real/live acceptance is not inferred from automated checks."
+    },
+    {
+      "id": "P02",
+      "number": 2,
+      "title": "Accounts, workspaces, and project access",
+      "status": "implemented_pending_verification",
+      "depends_on": [
+        "P01"
+      ],
+      "goal": "Establish who may see and change each project before accepting private evidence or contribution claims.",
+      "batches": [
+        {
+          "id": "P02A",
+          "title": "Sessions and account lifecycle",
+          "status": "implemented_pending_verification",
+          "deliverables": "Implement an explicit first-owner bootstrap, password hashing through a maintained library, revocable server-side sessions, HttpOnly cookies, CSRF protection, login throttling, logout, and account disablement. Store only hashes of session and invitation tokens. Development and HTTPS cookie settings must be distinct. No permanent demo password is enabled in production.",
+          "verification": "Expired, revoked, and disabled-user sessions fail. Cross-origin state-changing requests without the required CSRF proof fail. Login errors do not disclose whether an unrelated account exists."
+        },
+        {
+          "id": "P02B",
+          "title": "Workspace and project authorization",
+          "status": "implemented_pending_verification",
+          "deliverables": "Add workspaces, project memberships, invitations, scoped roles, and a central authorization service. Membership can be suspended without deleting historical contributor identity. Enforce workspace-scoped references in database relationships and in every API query. Audit role changes.",
+          "verification": "A user cannot read, edit, search, download, or export another workspace by guessing IDs. Removing membership revokes active access. Membership changes do not erase finalized historical credit."
+        },
+        {
+          "id": "P02C",
+          "title": "Team-management screens",
+          "status": "implemented_pending_verification",
+          "deliverables": "Build setup, login, project selection, member/invitation management, and permission-aware navigation. For the local pilot, the administrator may copy a one-time expiring invitation; an email service is not required yet. Provide an auditable operator-assisted recovery procedure and display project timezone/currency settings.",
+          "verification": "Seed two isolated workspaces, five fictional contributors, and a separate non-beneficiary reviewer. Test invited-user acceptance, expired invites, role changes, and read-only access in browser sessions."
+        }
+      ],
+      "planned_module_paths": [
+        "apps/api/app/auth/",
+        "apps/api/app/projects/",
+        "apps/api/app/security/",
+        "apps/api/migrations/",
+        "apps/web/src/features/auth/",
+        "apps/web/src/features/projects/",
+        "tests/integration/auth/"
+      ],
+      "acceptance_tests": [
+        "Authorization is enforced on the server, not just by hiding buttons.",
+        "Cross-workspace negative tests pass for every endpoint introduced so far.",
+        "A project owner cannot bypass future conflict-of-interest rules merely by holding the owner role."
+      ],
+      "demo": "Invite a contributor and reviewer, sign in as each, and demonstrate both permitted actions and denied cross-project access.",
+      "excluded": "Public self-service registration, subscription billing, enterprise SSO, and unaudited administrator impersonation.",
+      "verification_evidence": "docs/test_results.json; docs/releases/phase2.md; PostgreSQL, installation and actual browser checks remain open.",
+      "current_verification_evidence": "docs/test_results.json and verification/README.md supersede earlier unavailable-service notes. Phase-level real/live acceptance is not inferred from automated checks."
+    },
+    {
+      "id": "P03",
+      "number": 3,
+      "title": "Versioned policies and milestone budgets",
+      "status": "implemented_pending_verification",
+      "depends_on": [
+        "P02"
+      ],
+      "goal": "Turn the agreed rules into explicit, versioned configuration before credit can be issued.",
+      "batches": [
+        {
+          "id": "P03A",
+          "title": "Policy schema and draft templates",
+          "status": "implemented_pending_verification",
+          "deliverables": "Define contribution and distribution policy schemas, scope categories, budget rules, review requirements, contribution eligibility, accounting timezone, and pool boundaries. Include draft templates for a release pool and a release/ongoing split. Example ratios are sandbox fixtures, not silently accepted project economics.",
+          "verification": "Invalid ratios, unsupported currency settings, ambiguous period boundaries, and incomplete required rules are rejected. Saving a draft does not activate it or create economic rights."
+        },
+        {
+          "id": "P03B",
+          "title": "Approval and acknowledgement",
+          "status": "implemented_pending_verification",
+          "deliverables": "Add policy versions, approval records, participant acknowledgements, effective dates, agreement-document references, and prospective amendments. A policy change creates a new version; it does not overwrite the version used by an earlier award. The UI explains which participants still need to acknowledge the policy.",
+          "verification": "An unapproved policy cannot authorize credit finalization. Acknowledging version 1 does not acknowledge version 2. Changed economics do not recalculate frozen distributions."
+        },
+        {
+          "id": "P03C",
+          "title": "Budgets, reserves, and amendments",
+          "status": "implemented_pending_verification",
+          "deliverables": "Create milestones and integer-backed unit budgets. Add reserves, planned allocations, and audited budget amendments. Show the effect of a proposed budget change on provisional shares. Use transactional locking for concurrent allocations. Do not assign unused reserve to the owner.",
+          "verification": "Two simultaneous allocations cannot overspend a milestone. Negative budgets fail. Unissued reserve is not included as contributor-owned units. Reducing a budget below already-issued units is rejected."
+        }
+      ],
+      "planned_module_paths": [
+        "apps/api/app/contributions/budgets/",
+        "apps/api/app/policies/",
+        "apps/api/migrations/",
+        "apps/web/src/features/milestones/",
+        "apps/web/src/features/policies/",
+        "tests/unit/policies/"
+      ],
+      "acceptance_tests": [
+        "Policy history is immutable through ordinary application routes.",
+        "A milestone has a visible total, assigned budget, unissued reserve, and issued-unit total.",
+        "Participants can distinguish proposed economics from approved economics."
+      ],
+      "demo": "Create a 1,000-unit example milestone, reserve 100 units, approve a policy, and attempt both a valid and an overspending amendment.",
+      "excluded": "Automatic legal-contract generation, equity issuance, or claiming that an acknowledgement proves legal compliance.",
+      "verification_evidence": "docs/test_results.json; docs/releases/phase3.md; native PostgreSQL, clean installation and browser acceptance remain open.",
+      "current_verification_evidence": "docs/test_results.json and verification/README.md supersede earlier unavailable-service notes. Phase-level real/live acceptance is not inferred from automated checks."
+    },
+    {
+      "id": "P04",
+      "number": 4,
+      "title": "Work packages and measurable deliverables",
+      "status": "implemented_pending_verification",
+      "depends_on": [
+        "P03"
+      ],
+      "goal": "Let the team describe useful outcomes, allocate their budgets, and track progress without using commits as units of value.",
+      "batches": [
+        {
+          "id": "P04A",
+          "title": "Work-package creation and editing",
+          "status": "implemented_pending_verification",
+          "deliverables": "Build work-package list/detail/create/edit screens with category, coordinator, outcome, acceptance criteria, evidence requirements, intended contributors, policy reference, and approved budget. Use optimistic version checks to prevent overwriting another person's edits.",
+          "verification": "Stale edits produce a conflict response. Work packages cannot reference another project's milestone, policy, or contributor. Required outcome and evidence fields are validated."
+        },
+        {
+          "id": "P04B",
+          "title": "Subdeliverables and proposed attribution",
+          "status": "implemented_pending_verification",
+          "deliverables": "Split packages into independently acceptable, budgeted deliverables. Permit direct unit allocations or percentage proposals that are converted into exact integer unit atoms. Separate implementation, review, testing, and design roles without imposing universal weights. Pending allocations are proposals, not earned units.",
+          "verification": "Child budgets remain within their parent. Contributor allocations sum exactly to the deliverable budget. Splitting a package cannot create more units. Unassigned shares remain explicit blockers rather than disappearing from the denominator."
+        },
+        {
+          "id": "P04C",
+          "title": "Progress workflow and submission",
+          "status": "implemented_pending_verification",
+          "deliverables": "Add draft, budget-approved, in-progress, submitted, changes-requested, cancelled, and completed views. Record submission revisions. Reopening or changing approved scope creates an amendment. Keep state transitions server-controlled and show a timeline rather than editable free-text status.",
+          "verification": "Invalid transitions fail. Cancelling unaccepted work releases only unissued budget. Already-finalized awards cannot be deleted by cancelling a package. Every submission identifies the exact scope revision being reviewed."
+        }
+      ],
+      "planned_module_paths": [
+        "apps/api/app/contributions/work_packages/",
+        "apps/api/migrations/",
+        "apps/web/src/features/work-packages/",
+        "tests/integration/work_packages/"
+      ],
+      "acceptance_tests": [
+        "Code, art, QA, maintenance, research, and marketing use the same outcome-based workflow.",
+        "Every accepted portion can later be traced to a pre-approved or explicitly retrospective budget.",
+        "No provisional allocation is presented as a finalized share."
+      ],
+      "demo": "Create networking, animation, and QA packages, divide one into independently acceptable parts, and show that only planned budgets have changed.",
+      "excluded": "Automatic awards from task completion buttons, inferred labor hours, or generated complexity scores.",
+      "implementation_notes": "One approved allocation per package; immutable scope/attribution revisions; checked planning lifecycle; evidence-free readiness snapshots; no credit/completion until later review. See ADR 0005.",
+      "current_verification_evidence": "docs/test_results.json and verification/README.md supersede earlier unavailable-service notes. Phase-level real/live acceptance is not inferred from automated checks."
+    },
+    {
+      "id": "P05",
+      "number": 5,
+      "title": "Manual evidence and secure artifact handling",
+      "status": "implemented_pending_verification",
+      "depends_on": [
+        "P04"
+      ],
+      "goal": "Make non-code contributions first-class and establish the evidence boundary used by both humans and AI.",
+      "batches": [
+        {
+          "id": "P05A",
+          "title": "Evidence records and uploads",
+          "status": "implemented_pending_verification",
+          "deliverables": "Implement source links, contributor statements, and bounded artifact uploads with author/provenance claims, category, date, confidentiality, file hash, size, and processing status. Start with safe text and raster-image handling; other approved formats may remain download-only. Store external links without automatically fetching arbitrary URLs.",
+          "verification": "Unauthorized uploads, excessive sizes, unexpected file types, traversal filenames, and workspace-crossing evidence links are rejected. A declared author is a claim, not automatically a verified identity."
+        },
+        {
+          "id": "P05B",
+          "title": "Reviewable evidence interface",
+          "status": "implemented_pending_verification",
+          "deliverables": "Add an evidence timeline, safe text/image previews, attribution statements, notes, and protected downloads. Introduce a local protected-storage implementation behind an object-storage interface and a production S3-compatible adapter/test contract. Record missing, inaccessible, and excluded evidence explicitly.",
+          "verification": "A removed member cannot open a download URL or cached preview. Malicious HTML/Markdown is not executed. Files do not become public simply because their URLs are hard to guess."
+        },
+        {
+          "id": "P05C",
+          "title": "Immutable evidence snapshots",
+          "status": "implemented_pending_verification",
+          "deliverables": "Create content-addressed review snapshots linking package revision, acceptance criteria, artifacts, and omission lists. Subsequent uploads produce a new snapshot and mark affected unfinished reviews stale. Separate evidence retention from finalized accounting retention.",
+          "verification": "Changing an artifact invalidates the current review snapshot without changing an archived one. Deleted or unavailable evidence is labeled unavailable. Finalized unit totals are not silently recalculated when raw evidence retention expires."
+        }
+      ],
+      "planned_module_paths": [
+        "apps/api/app/evidence/",
+        "apps/api/app/storage/",
+        "apps/api/migrations/",
+        "apps/web/src/features/evidence/",
+        "tests/integration/evidence/"
+      ],
+      "acceptance_tests": [
+        "An artist and tester can submit useful evidence without a repository connection.",
+        "Every review uses a specified package revision and evidence snapshot.",
+        "The application never executes uploaded programs, macros, game projects, or repository scripts."
+      ],
+      "demo": "Attach a character image, test report, and design statement; submit them; replace one artifact; show the new revision and stale-review warning.",
+      "excluded": "Automatic Blender/Unreal parsing, archive extraction, broad URL crawling, PDF/OCR analysis, or file-size-based contribution valuation.",
+      "current_verification_evidence": "docs/test_results.json and verification/README.md supersede earlier unavailable-service notes. Phase-level real/live acceptance is not inferred from automated checks."
+    },
+    {
+      "id": "P06",
+      "number": 6,
+      "title": "Human review, disputes, and contribution ledger",
+      "status": "implemented_pending_verification",
+      "depends_on": [
+        "P05"
+      ],
+      "goal": "Convert authorized human decisions into durable contribution credit with precise arithmetic and a usable explanation of every award.",
+      "batches": [
+        {
+          "id": "P06A",
+          "title": "Review queue and decisions",
+          "status": "implemented_pending_verification",
+          "deliverables": "Build reviewer assignments, conflict checks, supported/unsupported acceptance criteria, requests for additional evidence, reasoned allocation decisions, and participant notification records. Bind approvals to the exact package, allocation, policy, and evidence revisions. Any material change invalidates outstanding approval.",
+          "verification": "A beneficiary cannot be the sole independent approver of their own award. A changed allocation cannot reuse old approval. The UI displays evidence before the final approval action and requires a reason."
+        },
+        {
+          "id": "P06B",
+          "title": "Award transactions and projections",
+          "status": "implemented_pending_verification",
+          "deliverables": "Create an append-only contribution-event ledger and derived balances. Finalizing accepted deliverables issues exact integer unit atoms in one transaction, checks budgets, and records idempotency keys. Use a dedicated ledger write path and database permissions; workers performing AI analysis will not receive this authority.",
+          "verification": "Repeated commands and concurrent approvals cannot double-issue units. The issued sum equals the accepted budget. Rebuilding balances from events reproduces the stored projection exactly. Ordinary update/delete attempts on finalized events fail."
+        },
+        {
+          "id": "P06C",
+          "title": "Disputes, adjustments, and contributor views",
+          "status": "implemented_pending_verification",
+          "deliverables": "Build dispute filing, supplementary evidence, assigned resolver, reasoned resolution, linked adjustment events, and personal/project contribution views. Display finalized units, pending claims, disputed amounts, exact pool denominator, and policy version. Record participant departures without erasing history.",
+          "verification": "An unresolved dispute prevents the affected pool's eventual close. Corrections add events and preserve the original award. An adjustment that would create an invalid negative entitlement is blocked for explicit resolution rather than causing negative payouts."
+        }
+      ],
+      "planned_module_paths": [
+        "apps/api/app/ledger/",
+        "apps/api/app/reviews/",
+        "apps/api/migrations/",
+        "apps/web/src/features/contributions/",
+        "apps/web/src/features/reviews/",
+        "tests/integration/ledger/"
+      ],
+      "acceptance_tests": [
+        "Manual contribution accounting works with GitHub and AI completely disabled.",
+        "Each awarded unit has a package, evidence, policy, decision, and actor trail.",
+        "The team can inspect and dispute attribution without an administrator editing balances by hand."
+      ],
+      "demo": "Accept the networking behavior but not its unfinished tests; award only its accepted units; repeat approval; open a dispute; and demonstrate linked correction history.",
+      "excluded": "AI-controlled finalization, automatic retroactive penalties for rewrites, or an endpoint that directly sets an arbitrary final personal percentage.",
+      "current_verification_evidence": "docs/test_results.json and verification/README.md supersede earlier unavailable-service notes. Phase-level real/live acceptance is not inferred from automated checks."
+    },
+    {
+      "id": "P07",
+      "number": 7,
+      "title": "Revenue simulator and first useful manual release",
+      "status": "implemented_pending_verification",
+      "depends_on": [
+        "P06"
+      ],
+      "goal": "Make the accounting consequences visible early, using a reusable pure calculation engine and clearly labeled hypothetical amounts.",
+      "batches": [
+        {
+          "id": "P07A",
+          "title": "Deterministic distribution engine",
+          "status": "implemented_pending_verification",
+          "deliverables": "Implement single-currency calculations using integer minor units and exact ratios. Normalize shares separately within each eligible pool. Apply a documented largest-remainder allocation with a stable tie-breaker, first among pools and then among recipients. Return every intermediate amount needed for explanation.",
+          "verification": "One cent among three contributors, uneven pools, zero denominators, negative distributable inputs, and large totals behave as specified. Line sums exactly match authorized amounts. The input ordering does not change a tie-breaker."
+        },
+        {
+          "id": "P07B",
+          "title": "What-if interface",
+          "status": "implemented_pending_verification",
+          "deliverables": "Build a simulator for an explicitly hypothetical distributable amount, approved or draft policy, and current contribution snapshot. Show provisional percentages, unissued planned units, pool weights, and a per-person calculation explanation. Label simulations non-payable and keep them separate from later financial-close records.",
+          "verification": "Editing a scenario never issues contribution units or creates a payment obligation. Scenario URLs respect workspace authorization. A preview shows the exact ledger revision it used."
+        },
+        {
+          "id": "P07C",
+          "title": "Regression fixtures and manual milestone",
+          "status": "implemented_pending_verification",
+          "deliverables": "Create 20\u201330 synthetic policy/accounting fixtures and end-to-end scenarios covering programming, art, QA, research, departures, unfinished work, and disputes. Package the first useful internal milestone as a manual ledger with revenue previews. Document its remaining limitations.",
+          "verification": "The agreed five-person $10,000 example yields $2,750, $2,350, $2,000, $1,650, and $1,250. The database can be reconstructed and the same simulator result obtained without external calls."
+        }
+      ],
+      "planned_module_paths": [
+        "apps/api/app/finance/calculation/",
+        "apps/web/src/features/simulator/",
+        "tests/e2e/",
+        "tests/fixtures/",
+        "tests/unit/finance/"
+      ],
+      "acceptance_tests": [
+        "The first genuinely useful milestone exists at the end of this phase.",
+        "Simulations and prospective shares are not labeled paid, owed, frozen, or legally vested.",
+        "The same engine will be reused for phase 13 rather than rewritten."
+      ],
+      "demo": "Walk five contributors through approved units and a $10,000 hypothetical distribution, then change only the hypothetical amount and inspect the explanation.",
+      "excluded": "Financial receipt imports, final accounting closes, bank transfers, tax forms, and permanent release-share freezing.",
+      "verification_evidence": "docs/test_results.json; docs/releases/phase7.md; docs/verification/phase7_*; native/build/browser/user checks remain open.",
+      "current_verification_evidence": "docs/test_results.json and verification/README.md supersede earlier unavailable-service notes. Phase-level real/live acceptance is not inferred from automated checks."
+    },
+    {
+      "id": "P08",
+      "number": 8,
+      "title": "GitHub App and historical evidence import",
+      "status": "implemented_pending_verification",
+      "depends_on": [
+        "P07"
+      ],
+      "goal": "Connect a selected repository and reconstruct its reviewable history without treating GitHub activity as automatic compensation.",
+      "batches": [
+        {
+          "id": "P08A",
+          "title": "GitHub App connection",
+          "status": "implemented_pending_verification",
+          "deliverables": "Implement customer-controlled GitHub App registration/configuration, installation association, selected-repository authorization, short-lived installation token handling, and connection status. Keep login identity separate from repository installation. Use only the currently documented read permissions required by implemented endpoints.",
+          "verification": "An unapproved installation cannot be attached by guessing its ID. The backend proves the installation belongs to the authorized connection flow. Revoked or missing permissions produce actionable errors; no code-write permissions are requested."
+        },
+        {
+          "id": "P08B",
+          "title": "Resumable history import",
+          "status": "implemented_pending_verification",
+          "deliverables": "Import bounded PRs, issues, reviews, commits, and check metadata with pagination, repository/date selection, checkpoints, cancellation, retry limits, and completeness reporting. Preserve exact revisions and the import-as-of instant. Store large/binary/missing-diff states instead of pretending the source is complete.",
+          "verification": "An interrupted import resumes without duplicate source versions. Rate limits pause rather than spin. A pre-cutoff PR updated later is handled through a documented refresh/reconciliation strategy. No import issues units."
+        },
+        {
+          "id": "P08C",
+          "title": "Identity and evidence linking",
+          "status": "implemented_pending_verification",
+          "deliverables": "Create stable external identity mappings, reviewable email/co-author claims, unknown/bot identities, and manual link/unlink decisions. Connect imported artifacts to existing work packages. Show activity statistics only with named metrics and denominators, never a composite personal-worth ranking.",
+          "verification": "Squash merges, multiple emails, direct commits, bots, and a different merger are represented without assuming the merger authored everything. One PR linked twice does not create duplicate credit."
+        }
+      ],
+      "planned_module_paths": [
+        "apps/api/app/evidence/sources/",
+        "apps/api/app/integrations/github/",
+        "apps/api/app/workers/",
+        "apps/web/src/features/github/",
+        "tests/contract/github/"
+      ],
+      "acceptance_tests": [
+        "A real authorized test repository can be imported and inspected alongside a fully mocked fixture repository.",
+        "One game project can hold multiple repository records, though one repository is the first end-to-end test.",
+        "Historical gaps and unknown identities are visible to reviewers."
+      ],
+      "demo": "Import a small permitted repository, map two authors, inspect a co-authored PR, attach it to a package, and confirm balances remain unchanged.",
+      "excluded": "Inferring missing non-code work, running builds from imported repositories, or issuing an automatic opening balance.",
+      "verification_evidence": "docs/releases/phase8.md; docs/test_results.json; docs/testing_phase8.md. Live GitHub, native database, Docker and browser acceptance remain open. DB-polling first-worker adapter is recorded in ADR 0009.",
+      "current_verification_evidence": "docs/test_results.json and verification/README.md supersede earlier unavailable-service notes. Phase-level real/live acceptance is not inferred from automated checks."
+    },
+    {
+      "id": "P09",
+      "number": 9,
+      "title": "Reliable synchronization and job processing",
+      "status": "implemented_pending_verification",
+      "depends_on": [
+        "P08"
+      ],
+      "goal": "Keep GitHub evidence current and establish the durable job infrastructure shared by later AI and export tasks.",
+      "batches": [
+        {
+          "id": "P09A",
+          "title": "Webhook intake",
+          "status": "implemented_pending_verification",
+          "deliverables": "Verify raw-body webhook signatures, validate event/action/installation/repository, deduplicate delivery IDs, and persist the accepted delivery with an outbox record in one transaction. Respond after durable acceptance; perform full fetching in workers. Keep the signing secret out of URLs and logs.",
+          "verification": "Forged signatures fail. Redelivered valid events do not create duplicate effects. A crash between database persistence and broker publication is recovered from the outbox."
+        },
+        {
+          "id": "P09B",
+          "title": "Worker lifecycle and scheduler",
+          "status": "implemented_pending_verification",
+          "deliverables": "Complete Celery/broker dispatch, database-owned job state, leases, bounded retries, rate-limit backoff, dead-letter handling, cancellation, and observable failure reasons. Activate scheduled reconciliation. Queue payloads contain scoped IDs, not source-code blobs or credentials.",
+          "verification": "Killed workers can resume safe operations. Two schedulers cannot dispatch the same periodic task twice. Job handlers recheck current authorization and credential status before external requests."
+        },
+        {
+          "id": "P09C",
+          "title": "Reconciliation and freshness UI",
+          "status": "implemented_pending_verification",
+          "deliverables": "Reconcile missed events, re-fetch authoritative versions after out-of-order events, process uninstall/repository-removal events, and display last-successful sync, backlog, incomplete artifacts, and stale reviews. Document a secure reachable webhook endpoint for local testing or an optional staging setup.",
+          "verification": "Missing webhooks are repaired. An older event cannot overwrite newer authoritative state. Revocation stops future fetches and triggers the configured retention/access response. New evidence does not change historical finalized awards."
+        }
+      ],
+      "planned_module_paths": [
+        "apps/api/app/integrations/github/",
+        "apps/api/app/jobs/",
+        "apps/api/app/workers/",
+        "apps/web/src/features/jobs/",
+        "infra/",
+        "tests/integration/jobs/"
+      ],
+      "acceptance_tests": [
+        "Accepted deliveries remain traceable through processing and failure states.",
+        "At-least-once delivery is handled with idempotent effects; the app does not assume exactly-once network delivery.",
+        "The scheduler runs only while the deployment is operating and checks overdue tasks after restart."
+      ],
+      "demo": "Replay a webhook, stop a worker, create another source change, restart, and show one current evidence version with no duplicated credit.",
+      "excluded": "Always-on operation while the user's computer is powered off, public deployment without HTTPS/security setup, and running repository code.",
+      "verification_evidence": "docs/test_results.json; docs/releases/phase9.md; native, optional broker, browser and live gates remain open.",
+      "current_verification_evidence": "docs/test_results.json and verification/README.md supersede earlier unavailable-service notes. Phase-level real/live acceptance is not inferred from automated checks."
+    },
+    {
+      "id": "P10",
+      "number": 10,
+      "title": "AI connections, provider adapters, and live model catalog",
+      "status": "implemented_pending_verification",
+      "depends_on": [
+        "P09"
+      ],
+      "goal": "Implement user-controlled permitted API connections, automatic discovery of available models, and a project-approved evaluator profile without hardcoding current model names.",
+      "batches": [
+        {
+          "id": "P10A",
+          "title": "Provider contract, secrets, and mock provider",
+          "status": "implemented_pending_verification",
+          "deliverables": "Define a provider adapter and normalized request/response/error contracts. Add a dedicated SecretStore interface, a customer-controlled encrypted secret backend with its master key outside the database and archives, credential identifiers and payer ownership permissions, revocation, and masked settings. Start with a deterministic fake provider for no-cost tests. Hosted BYOK remains disabled pending provider-specific authorization review.",
+          "verification": "Stored secrets are never returned to users, printed in logs, included in prompts, or passed in ordinary job payloads. A connection owner can revoke access. Permission to pay for a call does not itself authorize sending project source code."
+        },
+        {
+          "id": "P10B",
+          "title": "First live provider and budget controls",
+          "status": "implemented_pending_verification",
+          "deliverables": "Implement OpenAI as the initial adapter, subject to the project's permitted deployment. Add connection validation, model discovery, explicit small compatibility probes, pricing records, usage estimation, atomic spend reservations, bounded output, and usage reconciliation. Treat an ambiguous timeout as possibly billed; do not blindly repeat paid requests.",
+          "verification": "Invalid credentials, denied model access, unknown pricing, timeouts, refusals, output truncation, and rate limits have distinct states. Concurrent jobs cannot reserve the same remaining budget. No live paid test runs without explicit local configuration and payer approval."
+        },
+        {
+          "id": "P10C",
+          "title": "Anthropic, Gemini, and evaluator profiles",
+          "status": "implemented_pending_verification",
+          "deliverables": "Add the other two adapters one at a time under the same contract tests. Normalize per-connection catalogs and capabilities; refresh at connection creation, manual request, and roughly daily while running. Keep last-known-good entries after transient failure. Build profile approval/versioning, model selection, data-sharing controls, and profile-locked official runs.",
+          "verification": "A newly listed model appears as an option but never replaces the official evaluator. Incompatible modalities are filtered out. Missing capability/price data stays unknown. Revoked credentials stop queued requests; already-dispatched calls are tracked separately."
+        }
+      ],
+      "planned_module_paths": [
+        "apps/api/app/ai/profiles/",
+        "apps/api/app/ai/usage/",
+        "apps/api/app/providers/",
+        "apps/api/app/security/secrets/",
+        "apps/web/src/features/ai-settings/",
+        "tests/contract/providers/"
+      ],
+      "acceptance_tests": [
+        "OpenAI, Anthropic, and Gemini each pass adapter contract tests; live smoke results are individually recorded.",
+        "Catalog updates and official evaluator updates are distinct operations.",
+        "The entire manual product still works with no key or when every provider is unavailable."
+      ],
+      "demo": "Configure a permitted connection locally, refresh models, select a compatible model, approve a profile, and simulate a newly discovered model without changing that profile.",
+      "excluded": "Pasting secrets into chat, arbitrary remote provider URLs, automatic onboarding of new AI companies, automatic price guessing, or claims of a guaranteed total provider-invoice cap.",
+      "implementation_notes": "Implemented: fixed-origin REST adapters, encrypted customer-controlled credential store, own/payer authority, atomic integer usage, no automatic POST retries, explicit synthetic-only probes, per-connection catalogs and immutable approved profile configurations. No evidence evaluation (P11). Dedicated DB-owned AI queue intentionally separate from GitHub outbox; ADR 0011. Native/live/browser/installed acceptance pending.",
+      "current_verification_evidence": "docs/test_results.json and verification/README.md supersede earlier unavailable-service notes. Phase-level real/live acceptance is not inferred from automated checks."
+    },
+    {
+      "id": "P11",
+      "number": 11,
+      "title": "Evidence-grounded AI review",
+      "status": "implemented_pending_verification",
+      "depends_on": [
+        "P10"
+      ],
+      "goal": "Use AI to explain the work and assess evidence against agreed outcomes while preserving human approval and deterministic credit accounting.",
+      "batches": [
+        {
+          "id": "P11A",
+          "title": "Bounded evidence packets",
+          "status": "implemented_pending_verification",
+          "deliverables": "Build packets from exact work-package/policy/evidence revisions. Redact secrets and unnecessary personal identifiers, neutralize contributor display identities where practical, select relevant code context, record omitted material, and estimate cost. Do not send salaries, current revenue shares, popularity measures, or unrelated project data.",
+          "verification": "Cross-workspace evidence and excluded paths never enter a packet. Large inputs produce explicit omissions or a needs-evidence status rather than silent truncation. Packet hashes change when relevant source content changes."
+        },
+        {
+          "id": "P11B",
+          "title": "Structured assessments and validation",
+          "status": "implemented_pending_verification",
+          "deliverables": "Implement versioned prompts and output schemas for outcome summaries, supported/contradicted/insufficient criteria, proposed roles, overlap flags, questions, and evidence references. Validate all referenced IDs and output types, record provider/model/usage/request metadata, and keep the model limited to assessment writes. Citation existence checks do not prove a claim is true; human review remains required.",
+          "verification": "Invented IDs, unauthorized identities, malformed JSON, provider refusals, and truncated responses cannot become awards. Repository instructions to award money have no executable route. Raw reasoning traces are not required; save task-relevant conclusions and evidence."
+        },
+        {
+          "id": "P11C",
+          "title": "AI-assisted reviewer experience",
+          "status": "implemented_pending_verification",
+          "deliverables": "Show an assessment beside original evidence and allow accept, modify, reject, or request evidence with reasons. Separate advisory/private comparisons from official project-profile runs. Retain official reruns and their reasons. Cache only within the authorized workspace and exact packet/profile versions.",
+          "verification": "Choosing a more favorable model does not replace the official profile. An outage leaves manual review available. Evidence changes mark unfinished assessments stale. The reviewer can trace each accepted observation to the original artifact."
+        }
+      ],
+      "planned_module_paths": [
+        "apps/api/app/ai/assessments/",
+        "apps/api/app/ai/packets/",
+        "apps/api/app/ai/validation/",
+        "apps/web/src/features/assessments/",
+        "evals/",
+        "tests/integration/ai/"
+      ],
+      "acceptance_tests": [
+        "AI creates review suggestions, not ledger events, economic entitlements, or payment commands.",
+        "Missing evidence is not converted into zero contribution.",
+        "Model explanations and reviewer decisions are both archived, including disagreement."
+      ],
+      "demo": "Analyze a networking package with an intentionally missing test; show a needs-evidence finding, attach the test, rerun under the same profile, and have a human finalize the decision.",
+      "excluded": "Objective worth percentages, guaranteed code correctness, inferred hours, automatic ownership, or a claim that several agreeing models prove fairness.",
+      "current_verification_evidence": "docs/test_results.json and verification/README.md supersede earlier unavailable-service notes. Phase-level real/live acceptance is not inferred from automated checks."
+    },
+    {
+      "id": "P12",
+      "number": 12,
+      "title": "Existing-project reconstruction and contribution dashboards",
+      "status": "implemented_pending_verification",
+      "depends_on": [
+        "P11"
+      ],
+      "goal": "Deliver the original connect-a-project experience: reconstruct candidate contributions from history, let people correct the reconstruction, and produce an approved opening balance.",
+      "batches": [
+        {
+          "id": "P12A",
+          "title": "Candidate work-package grouping",
+          "status": "implemented_pending_verification",
+          "deliverables": "Group imported activity using explicit issue/PR relationships, milestones, source references, and optional AI suggestions. Allow reviewers to merge, split, reassign, and reject candidates. Preserve grouping provenance and evidence coverage. Suggested unit ranges use the team's agreed examples, not a universal impact formula.",
+          "verification": "Artificially splitting commits/PRs does not multiply an approved outcome budget. The same evidence cannot silently create duplicated awards. Binary or missing history appears as a limitation, not absence of work."
+        },
+        {
+          "id": "P12B",
+          "title": "Opening-balance review",
+          "status": "implemented_pending_verification",
+          "deliverables": "Create a batch of retrospective packages under an explicitly approved historical scope and unit budget. Invite missing-role contributions, resolve unknown identities, compare alternative allocations, and approve the opening balance through the existing human review and ledger path. Require before/after dilution visibility.",
+          "verification": "Unknown attribution and active disputes block the affected balance freeze. Re-importing does not re-award opening credit. Historical approvals retain the retrospective policy and do not pretend a prior agreement existed."
+        },
+        {
+          "id": "P12C",
+          "title": "Project and contributor explanations",
+          "status": "implemented_pending_verification",
+          "deliverables": "Build dashboards for observed activity, finalized contribution share by pool, pending/unresolved work, categories, evidence sufficiency, and optional simulated revenue. Explain each percentage's numerator, denominator, scope, date, and policy. Provide filters without global personal rankings or a pseudo-objective meaningfulness score.",
+          "verification": "Filters do not silently change the denominator label. A person with non-code work is represented alongside programmers. Unsupported AI observations remain separate from accepted contribution decisions."
+        }
+      ],
+      "planned_module_paths": [
+        "apps/api/app/contributions/reconstruction/",
+        "apps/api/app/reporting/",
+        "apps/web/src/features/overview/",
+        "apps/web/src/features/reconstruction/",
+        "tests/e2e/reconstruction/"
+      ],
+      "acceptance_tests": [
+        "The original product loop is complete: connect history \u2192 review evidence \u2192 agree credit \u2192 see contribution and hypothetical revenue shares.",
+        "Prospective and retrospective work are visibly distinguishable.",
+        "The application can show useful results without asserting it found every contribution."
+      ],
+      "demo": "Import a fictional existing game, let AI suggest outcomes, add an artist's missing evidence, approve a corrected opening balance, and explain each contributor's share.",
+      "excluded": "Automatic compensation from history alone, global cross-project scores, or hiding uncertainty behind decimal precision.",
+      "implementation_note": "Deterministic captured-relationship grouping plus manual outcomes; existing credit finalization reused; archival is not bulk issuance or permanent financial-share freezing. Optional AI grouping not implemented. Native/installed/browser/user gates open.",
+      "current_verification_evidence": "docs/test_results.json and verification/README.md supersede earlier unavailable-service notes. Phase-level real/live acceptance is not inferred from automated checks."
+    },
+    {
+      "id": "P13",
+      "number": 13,
+      "title": "Financial records, frozen distributions, and exports",
+      "status": "implemented_pending_verification",
+      "depends_on": [
+        "P12"
+      ],
+      "goal": "Extend the existing simulator into auditable accounting-period closes without custody of funds or automatic payments.",
+      "batches": [
+        {
+          "id": "P13A",
+          "title": "Periods and reconciled financial records",
+          "status": "implemented_pending_verification",
+          "deliverables": "Add accounting periods, project-timezone cutoffs, statement attachments, receipts with explicit gross/net basis, approved deductions, reserve movements, and agreed deficit carryforward. Track money received separately from contribution units. Add duplicate-import identifiers for supported manual/CSV entry paths. Prevent double deductions from already-net receipts.",
+          "verification": "The same statement entry cannot be silently imported twice. A negative net balance remains recorded even when the distributable amount is zero. Unsupported or unapproved expenses do not reduce distributions."
+        },
+        {
+          "id": "P13B",
+          "title": "Share snapshots and close workflow",
+          "status": "implemented_pending_verification",
+          "deliverables": "Freeze release-pool membership/shares at an approved release close, then use those shares with separately eligible ongoing-period units. Add preflight blockers, close approval, immutable financial/policy/ledger snapshots, and concurrency-safe finalization. Reuse phase 7's calculator. Revisions after a close are linked adjustments, not silent recomputation.",
+          "verification": "Disputed units, unresolved attribution, unapproved finance entries, incomplete required acknowledgements, and zero-denominator pools without an agreed handling rule block the relevant close. Concurrent close requests produce one snapshot. Historical replay needs no AI call."
+        },
+        {
+          "id": "P13C",
+          "title": "Statements, exports, and external payment records",
+          "status": "implemented_pending_verification",
+          "deliverables": "Generate per-contributor statements, CSV/JSON exports, calculation explanations, hashes, and audit bundles. Escape spreadsheet-formula-like untrusted text. Add externally supplied payment references, amounts, partial payments, status, and reconciliation. Re-export the same frozen snapshot without recreating obligations.",
+          "verification": "All allocations reconcile to the authorized distributable amount, including explicit held amounts where policy permits. Exported is not paid. Duplicate external reference submissions are detected. Later corrections preserve both the original close and payment history."
+        }
+      ],
+      "planned_module_paths": [
+        "apps/api/app/finance/close/",
+        "apps/api/app/finance/exports/",
+        "apps/api/app/finance/periods/",
+        "apps/web/src/features/distributions/",
+        "tests/integration/finance/"
+      ],
+      "acceptance_tests": [
+        "Past distributions reproduce exactly from stored approved records and calculator version.",
+        "No bank, wallet, card, tax filing, or equity issuance exists in this version.",
+        "Real-use mode remains gated by operational readiness and documented human approval of the actual agreements; a checkbox is not a legal certification."
+      ],
+      "demo": "Enter a synthetic net statement, close a period, explain an exact distribution, export it twice, record a partial external payment, and replay the unchanged historical result.",
+      "excluded": "Automatic money movement, automatic clawbacks, multi-currency conversion, company accounting in full, or legal/tax advice generated by the score.",
+      "implementation_note": "Single USD/timezone/source-policy stream, hard synthetic-only gate; canonical receipt CSV import and existing bounded private document formats; one immutable approved close per period; prospective fixed-roster corrections; deterministic CSV/JSON/ZIP and local replay; external declarations only. Native/browser/security and user gates remain open.",
+      "current_verification_evidence": "docs/test_results.json and verification/README.md supersede earlier unavailable-service notes. Phase-level real/live acceptance is not inferred from automated checks."
+    },
+    {
+      "id": "P14",
+      "number": 14,
+      "title": "Security hardening, backup recovery, and staging",
+      "status": "implemented_pending_verification",
+      "depends_on": [
+        "P13"
+      ],
+      "goal": "Validate the security already built into prior phases and prepare a controlled, recoverable deployment before onboarding a real team.",
+      "batches": [
+        {
+          "id": "P14A",
+          "title": "Adversarial access and input tests",
+          "status": "implemented_pending_verification",
+          "deliverables": "Audit authorization across APIs, files, search, exports, jobs, caches, and logs. Test CSRF, injection, upload abuse, malicious markup, formula injection, rate limits, and provider endpoint restrictions. Verify AI worker database permissions and secret access boundaries. Review dependencies and container configuration.",
+          "verification": "Critical cross-workspace, secret-exposure, and ledger-integrity defects block release. Prompt-injection test failures cannot cause privileged actions because the model has no such capabilities. General telemetry contains no raw credentials or confidential prompts."
+        },
+        {
+          "id": "P14B",
+          "title": "Backup, restore, and upgrades",
+          "status": "implemented_pending_verification",
+          "deliverables": "Implement coordinated backups for PostgreSQL, evidence objects, configuration, and protected key material through an operator-controlled process. Test restoration into an isolated environment, calculator replay, migration upgrades from the prior tag, and recovery after a failed migration. Document which rollback paths require restore rather than an unsafe downgrade.",
+          "verification": "A restored project reproduces finalized distributions and can decrypt its required retained secrets only with the separately controlled recovery material. A database-only backup is not labeled a complete system backup. Destructive reset is disabled outside development."
+        },
+        {
+          "id": "P14C",
+          "title": "Restricted staging and operational controls",
+          "status": "implemented_pending_verification",
+          "deliverables": "Provide a controlled staging/production configuration with HTTPS, no development accounts, secure cookie settings, protected service ports, health checks, secret injection, bounded workers, and operational logs. Add stronger administrator authentication such as tested MFA before remote real-use access. Include retention/export/delete workflows and incident procedures.",
+          "verification": "Only approved public endpoints are exposed. Debug routes and broad CORS are absent. Disabling an integration stops new jobs. An operator completes documented restore and credential-rotation drills in staging."
+        }
+      ],
+      "planned_module_paths": [
+        "apps/api/app/operations/",
+        "apps/api/app/security/",
+        "docs/runbooks/",
+        "infra/",
+        "scripts/",
+        "tests/security/"
+      ],
+      "acceptance_tests": [
+        "No unresolved critical security or accounting defect is accepted for the pilot.",
+        "Restore and upgrade procedures have executed results, not only written instructions.",
+        "Staging is a deliberate user-controlled deployment, not an unannounced public publication."
+      ],
+      "demo": "Rotate a test credential, restore an isolated backup, replay a financial snapshot, and demonstrate that unauthorized users and workers cannot access restricted data.",
+      "excluded": "Claims of independent certification, tamper-proof administration, a guaranteed uptime SLA, or public SaaS launch.",
+      "implementation_notes": {
+        "P14A": "MFA/session boundaries, strict staging configuration, header/input checks, native-role provisioning/startup guards and full inherited regression; installed dependency scan and native grants remain open.",
+        "P14B": "Authenticated paired archives, operator stop/capture/isolated restore tools, retained artifact/secret/distribution verification and actual SQLite restore plus migration rollback tests. Native PostgreSQL/Docker restore is supplied but not executed; no S3 capture.",
+        "P14C": "Separate manual-only mandatory-MFA HTTPS private staging, loopback drill, false-by-default operator readiness and recovery/retention/incident procedures. No public service or production/real-finance enablement. Browser/TLS/firewall/role drills are still open."
+      },
+      "verification_notes": "Implementation does not satisfy native/browser/remote exit gates. Source checks and an actual encrypted SQLite recovery test are not a completed PostgreSQL/Compose restore or independent audit. The next corpus work may proceed while those gates remain blockers to any real pilot deployment.",
+      "current_verification_evidence": "docs/test_results.json and verification/README.md supersede earlier unavailable-service notes. Phase-level real/live acceptance is not inferred from automated checks."
+    },
+    {
+      "id": "P15",
+      "number": 15,
+      "title": "Evaluator validation and shadow pilot",
+      "status": "evaluation_tools_implemented_human_pilot_pending",
+      "depends_on": [
+        "P14"
+      ],
+      "goal": "Find out whether the system actually improves contribution review before using its AI suggestions around real earnings.",
+      "batches": [
+        {
+          "id": "P15A",
+          "title": "Evaluation corpus and reporting",
+          "status": "implemented_synthetic_references_pending_human_validation",
+          "deliverables": "Expand to at least 100 varied synthetic or authorized cases with reviewer references, honest disagreements, and a separately held-out set. Include non-code work, small critical fixes, large routine work, prototypes, paid/AI-assisted contributions, and missing artifacts. Version the dataset and run the same packets against proposed evaluator changes.",
+          "verification": "Report criterion support, unsupported claims, invalid output, omission rate, reviewer changes, latency, and usage cost separately. A single aggregate score cannot excuse a permission or accounting defect."
+        },
+        {
+          "id": "P15B",
+          "title": "Robustness and failure drills",
+          "status": "implemented_offline_and_mock_checks_pending_live_verification",
+          "deliverables": "Test name/order sensitivity, verbosity changes, formatting churn, PR splitting, model substitutions, retired models, outages, ambiguous billing timeouts, and budget reservation races. Compare AI-assisted review with the existing manual baseline. Record limitations and thresholds before evaluating the holdout.",
+          "verification": "No money changes based on the benchmark itself. Failing core security/accounting tests blocks release. AI disagreements remain visible and resolved by people; no fabricated fairness guarantee is published."
+        },
+        {
+          "id": "P15C",
+          "title": "Two-period shadow pilot",
+          "status": "observation_tools_prepared_human_pilot_not_started",
+          "deliverables": "Have the participating team run at least two complete review periods using the application while existing compensation arrangements remain unchanged. Collect participant feedback, disputes, review time, missing-role evidence, and independent reconstruction attempts. Record real completion evidence; synthetic tests alone do not mark a human pilot finished.",
+          "verification": "Participants can explain their proposed allocations and appeal them. The product provides enough administrative benefit compared with the manual ledger to justify continued use. Remaining disagreements and limitations are documented."
+        }
+      ],
+      "planned_module_paths": [
+        "docs/pilot/",
+        "evals/adversarial/",
+        "evals/fixtures/",
+        "evals/holdout/",
+        "evals/reports/",
+        "tests/resilience/"
+      ],
+      "acceptance_tests": [
+        "Actual pilot observations, not assumptions, determine whether AI-assisted real use should proceed.",
+        "Provider credential/data arrangements and actual team agreements have been reviewed before the relevant go-live decision.",
+        "No phase is labeled passed merely because code was generated."
+      ],
+      "demo": "Compare a manual decision with an AI-assisted decision on the same package and reconstruct a proposed period distribution independently.",
+      "excluded": "Claiming universal evaluator accuracy, substituting fictitious users for a completed human pilot, or automatically changing compensation during the pilot.",
+      "implementation_notes": {
+        "P15A": "168 synthetic cases / 24 families, family-separated 126/42 splits, strict offline scorer and bounded reports. References are developer-authored, not independent human labels.",
+        "P15B": "Controlled alias/order/verbosity/formatting/source-fragmentation/injection variants, strict reference validation, model changes, missing/failed outputs, unknown costs and existing authorization/accounting regression.",
+        "P15C": "Private blank observations template and descriptive summary tool only. Zero actual participants/periods observed; not started."
+      }
+    },
+    {
+      "id": "P16",
+      "number": 16,
+      "title": "Limited release and maintainable handoff",
+      "status": "installed_verified_pending_user_testing",
+      "depends_on": [
+        "P15"
+      ],
+      "goal": "Package the tested product for a small invited team, with clear operating instructions and separately documented approval for any real use.",
+      "batches": [
+        {
+          "id": "P16A",
+          "title": "Onboarding and product finishing",
+          "status": "installed_verified_pending_user_testing",
+          "deliverables": "Complete onboarding for project policy, team members, repository connection, AI connection, opening balance, and first review. Improve keyboard navigation, mobile-browser usability, empty states, error recovery, and plain-language explanations. Finish operator and contributor guides.",
+          "verification": "A new invited team can complete a synthetic setup without undocumented developer intervention. Every percentage is labeled. Manual mode is discoverable and fully functional."
+        },
+        {
+          "id": "P16B",
+          "title": "Release package and upgrade path",
+          "status": "installed_verified_pending_user_testing",
+          "deliverables": "Produce a tagged source release, locked dependencies, migrations, configuration examples, backup/restore scripts, deployment instructions, release notes, and a verified test report. Include an explicit list of external checks performed by the user versus tests run in the development environment.",
+          "verification": "Install the release into a fresh environment and upgrade a retained prior-version fixture. Neither route overwrites local secrets or database data. Every bundled file has a purpose and the manifest matches the actual release."
+        },
+        {
+          "id": "P16C",
+          "title": "Go-live checklist and maintenance baseline",
+          "status": "checklist_prepared_real_use_disabled",
+          "deliverables": "Run a final feature, permission, financial, provider-arrangement, agreement, backup, and pilot checklist. Keep actual-compensation mode disabled until the responsible people approve their deployment and rules. Define incident contacts, review cadence, model/profile upgrade gates, dependency maintenance, and a prioritized post-beta backlog.",
+          "verification": "The app does not present technical release completion as legal approval. Public signup, custody of funds, and autonomous payouts remain absent. The team has a rollback/recovery procedure and knows which limitations remain."
+        }
+      ],
+      "planned_module_paths": [
+        "apps/web/src/features/onboarding/",
+        "docs/release/",
+        "docs/runbooks/",
+        "docs/user-guide/",
+        "infra/",
+        "tests/e2e/"
+      ],
+      "acceptance_tests": [
+        "A limited invited deployment is reproducible and recoverable.",
+        "All required tests have recorded results and all unresolved non-critical limitations are disclosed.",
+        "The next version starts from a saved tagged baseline, not an incomplete chat transcript."
+      ],
+      "demo": "Install the tagged build, onboard a fictional five-person team, reproduce the complete GitHub/AI/manual/preview/export workflow, and inspect the readiness checklist.",
+      "excluded": "General public SaaS, automatic payment execution, broad employee monitoring, equity administration, or unsupported integrations.",
+      "implementation_notes": {
+        "P16A": "Getting started, account/manual/mock workflows and desktop/mobile browser checks executed; real user acceptance remains open.",
+        "P16B": "Clean exact installs, complete build, native PostgreSQL/Redis, populated upgrades, real browser and coordinated native/Docker recovery executed; sanitized source manifest and private main branch provided.",
+        "P16C": "Readiness/maintenance/user/upgrade guides and preserved synthetic-only boundary; deployment and real-use approval not performed."
+      }
+    },
+    {
+      "id": "P17",
+      "number": 17,
+      "title": "Repository-first contribution dashboard",
+      "status": "verified",
+      "depends_on": [
+        "P16"
+      ],
+      "goal": "Implement the owner-requested complete repository-to-contributor analysis workflow without replacing human credit decisions.",
+      "batches": [
+        {
+          "id": "P17A",
+          "title": "Capture, saved draft reports and contributor dashboard",
+          "status": "verified",
+          "deliverables": "Public URL capture, authorized import reuse, multiple repositories/projects, source-cited outcomes, identities, manual extras and exact draft scenarios.",
+          "verification": "Focused API/native migrations/concurrency and real desktop/mobile fixture browser checks; anonymous public Hello-World capture. Not private App or AI quality validation."
+        },
+        {
+          "id": "P17B",
+          "title": "Reviewed handoff, summary quality and contributor-facing access",
+          "status": "verified",
+          "deliverables": "Improve summaries, manual editing and explicit report sharing; transfer pinned outcomes into ordinary independent human review; preserve proposed/approved distinctions.",
+          "verification": "API/native/browser acceptance of disclosure, editing, attribution and review transfer, with no duplicate credit."
+        },
+        {
+          "id": "P17C",
+          "title": "Complete regression, installed upgrade and delivery",
+          "status": "verified",
+          "deliverables": "Complete adjacent/full checks, preserve installed practice data, update guides/results and publish sanitized source to the existing private main branch.",
+          "verification": "Current executed results, source/migration hash audit, upgrade/persistence evidence, CI status and complete sanitized ZIP."
+        }
+      ],
+      "planned_module_paths": [
+        "apps/api/app/analysis/",
+        "apps/web/src/features/analysis/",
+        "docs/repository_analysis.md"
+      ],
+      "notes": [
+        "Paid AI, private-source authorization, real compensation and public deployment remain separately gated."
+      ]
+    }
+  ],
+  "open_verification_items": [
+    "V01",
+    "V02",
+    "V03",
+    "V04",
+    "V05",
+    "V06",
+    "V07",
+    "V08",
+    "V09",
+    "V10",
+    "V11",
+    "V12",
+    "V13",
+    "V14"
+  ],
+  "source_version": "0.17.8-phase17",
+  "updated_at": "2026-10-07",
+  "next_action": "Fictional acceptance of the complete personal Windows Start.cmd package and targeted defects; clean-machine, fresh CI, external/live and independent human gates remain separately required.",
+  "verification_progress": {
+    "V01": {
+      "verified": "Clean pinned Python/npm/jobs installation, completed npm integrity, full build, installed advisory scans and actual Linux image builds.",
+      "remaining": "Python artifact hashes, immutable image digest pinning and ongoing advisory maintenance."
+    },
+    "V02": {
+      "verified": "Native PostgreSQL 17.11 full migration/upgrade/concurrency/history/role suite.",
+      "remaining": "Validate actual deployment grants again after any cutover; no deployed permissions certification."
+    },
+    "V03": {
+      "verified": "Linux Docker normal stack and recovery; 18 Windows PowerShell syntax checks.",
+      "remaining": "Windows Docker Desktop execution and private staging/optional real integration overlays."
+    },
+    "V04": {
+      "verified": "Full React build and actual Windows/Linux Chromium manual/mock/MFA/feature desktop-mobile flows.",
+      "remaining": "Owner acceptance and broader browser/assistive-technology coverage."
+    },
+    "V05": {
+      "verified": "Prepared fictional workflow and reproducible release.",
+      "remaining": "Actual user acceptance."
+    },
+    "V06": {
+      "verified": "Native populated paired recovery and actual Docker isolated restore; access/accounting regressions.",
+      "remaining": "Independent security/cryptography review, deployment load tests and actual recovery/cutover policy."
+    },
+    "V07": {
+      "verified": "Synthetic S3 SDK contracts.",
+      "remaining": "Authorized live S3 and version-aware coordinated backup."
+    },
+    "V08": {
+      "verified": "Mock GitHub import/sync/callback/reconstruction; authorized private source repository creation.",
+      "remaining": "Application live GitHub App authorization, repository permissions and reconciliation."
+    },
+    "V09": {
+      "verified": "Real Redis transport contracts, native worker-role tests and cold worker entry points.",
+      "remaining": "Actual configured live worker/scheduler/crash/HTTPS deployment."
+    },
+    "V10": {
+      "verified": "Mock catalog/profile/assessment and retained synthetic provider-credential recovery.",
+      "remaining": "Live provider permission, disclosure, credential and billing arrangements."
+    },
+    "V11": {
+      "verified": "Offline synthetic calibration and disclosure/acceptance privilege boundaries.",
+      "remaining": "Independent references, real-model quality and actual evidence interpretation/retention review."
+    },
+    "V12": {
+      "verified": "Mock historical reconstruction UI, grouping/no-award and exact denominators.",
+      "remaining": "Authorized real project history and omitted-role review."
+    },
+    "V13": {
+      "verified": "Synthetic native close/concurrency/correction/export and exact 100003-cent replay.",
+      "remaining": "Real financial source truth and responsible agreement/operational review; real finance remains disabled."
+    },
+    "V14": {
+      "verified": "MFA/recovery/browser and native security-role checks; isolated native/Docker restoration.",
+      "remaining": "Restricted actual HTTPS/firewall staging, independent security review and real human pilot."
+    }
+  },
+  "public_source_release": {
+    "version": "0.17.8-phase17",
+    "status": "experimental",
+    "evidence": "docs/test_results.json",
+    "generated_personal_outputs_included": false
+  }
+}

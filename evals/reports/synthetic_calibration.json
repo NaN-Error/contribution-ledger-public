@@ -1,0 +1,2220 @@
+{
+  "report_version": "offline-evaluation-report-v1",
+  "reference_origin": "synthetic_author_expectation_not_human_review",
+  "corpus": {
+    "version": "synthetic-evidence-corpus-v1",
+    "split": "calibration",
+    "cases_sha256": "22a755f7aef1e42edae024a08cd05b60eb64284c1766840c53d7af53c937ae0c",
+    "manifest_fingerprint": "f36e800732cc34ae4b15ff4c95c7c229f2efb5ca5f71e22afe928d9397adcd00",
+    "thresholds_fingerprint": "0cb37b853de644264848ba6f09eca13a9dc42a1b6900cd2b4c896538b8d0a930",
+    "thresholds": {
+      "version": "provisional-synthetic-thresholds-v1",
+      "minimum_synthetic_agreement": 0.9,
+      "maximum_changed_pair_rate": 0.05,
+      "human_reviewed": false,
+      "independent_model_validation": false,
+      "purpose": "Provisional regression alerts only; freeze before any authorized holdout measurement. Never authorize deployment."
+    },
+    "holdout_reason": null
+  },
+  "predictions_fingerprint": "c0648cd7080bd67faeda45c86e9542eb5ab06a084693d5d459a8817a4b51cd59",
+  "run_identity": {
+    "provider": "mock",
+    "requested_model": "synthetic-json-v1",
+    "profile_fingerprint": "2232b7a7957664df23c4ad9d2f39e2382bd548d5cf7ee0702ca9c128f8b2f0aa",
+    "origin": "synthetic_mock"
+  },
+  "case_count": 126,
+  "independent_scenario_family_count": 18,
+  "prediction_coverage": {
+    "numerator": 126,
+    "denominator": 126,
+    "rate": 1.0
+  },
+  "valid_output_coverage": {
+    "numerator": 126,
+    "denominator": 126,
+    "rate": 1.0
+  },
+  "invalid_output_rate": {
+    "numerator": 0,
+    "denominator": 126,
+    "rate": 0.0
+  },
+  "generation_failure_rate": {
+    "numerator": 0,
+    "denominator": 126,
+    "rate": 0.0
+  },
+  "missing_predictions": 0,
+  "criterion_coverage": {
+    "numerator": 378,
+    "denominator": 378,
+    "rate": 1.0
+  },
+  "agreement_with_allowed_synthetic_labels": {
+    "numerator": 126,
+    "denominator": 378,
+    "rate": 0.3333333333333333
+  },
+  "full_case_agreement": {
+    "numerator": 0,
+    "denominator": 126,
+    "rate": 0.0
+  },
+  "supported_predictions_not_allowed_by_reference": {
+    "numerator": 0,
+    "denominator": 0,
+    "rate": null
+  },
+  "ambiguous_reference_criteria_scored": 14,
+  "confusion_single_label_only": {
+    "supported": {
+      "supported": 0,
+      "contradicted": 0,
+      "insufficient": 126
+    },
+    "contradicted": {
+      "supported": 0,
+      "contradicted": 0,
+      "insufficient": 126
+    },
+    "insufficient": {
+      "supported": 0,
+      "contradicted": 0,
+      "insufficient": 112
+    }
+  },
+  "per_class": {
+    "supported": {
+      "precision_against_single_label_references": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "recall_against_single_label_references": {
+        "numerator": 0,
+        "denominator": 126,
+        "rate": 0.0
+      }
+    },
+    "contradicted": {
+      "precision_against_single_label_references": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "recall_against_single_label_references": {
+        "numerator": 0,
+        "denominator": 126,
+        "rate": 0.0
+      }
+    },
+    "insufficient": {
+      "precision_against_single_label_references": {
+        "numerator": 112,
+        "denominator": 364,
+        "rate": 0.3076923076923077
+      },
+      "recall_against_single_label_references": {
+        "numerator": 112,
+        "denominator": 112,
+        "rate": 1.0
+      }
+    }
+  },
+  "category_counts": {
+    "art": {
+      "cases": 14,
+      "valid": 14,
+      "agreed_criteria": 14,
+      "scored_criteria": 42
+    },
+    "audio": {
+      "cases": 7,
+      "valid": 7,
+      "agreed_criteria": 7,
+      "scored_criteria": 21
+    },
+    "code": {
+      "cases": 28,
+      "valid": 28,
+      "agreed_criteria": 28,
+      "scored_criteria": 84
+    },
+    "community": {
+      "cases": 7,
+      "valid": 7,
+      "agreed_criteria": 7,
+      "scored_criteria": 21
+    },
+    "design": {
+      "cases": 7,
+      "valid": 7,
+      "agreed_criteria": 7,
+      "scored_criteria": 21
+    },
+    "infrastructure": {
+      "cases": 7,
+      "valid": 7,
+      "agreed_criteria": 7,
+      "scored_criteria": 21
+    },
+    "maintenance": {
+      "cases": 14,
+      "valid": 14,
+      "agreed_criteria": 14,
+      "scored_criteria": 42
+    },
+    "marketing": {
+      "cases": 7,
+      "valid": 7,
+      "agreed_criteria": 7,
+      "scored_criteria": 21
+    },
+    "production": {
+      "cases": 7,
+      "valid": 7,
+      "agreed_criteria": 7,
+      "scored_criteria": 21
+    },
+    "testing": {
+      "cases": 14,
+      "valid": 14,
+      "agreed_criteria": 14,
+      "scored_criteria": 42
+    },
+    "writing": {
+      "cases": 14,
+      "valid": 14,
+      "agreed_criteria": 14,
+      "scored_criteria": 42
+    }
+  },
+  "omissions": {
+    "cases_with_omissions": {
+      "numerator": 126,
+      "denominator": 126,
+      "rate": 1.0
+    },
+    "declared_omission_entries": 126,
+    "note": "Packet disclosure coverage, not a model judgment or an estimate of unrecorded real work."
+  },
+  "sensitivity": {
+    "alias_swap": {
+      "expected_pairs": 18,
+      "scored_pairs": 18,
+      "changed_pairs": 0,
+      "scored_criteria": 54,
+      "changed_criteria": 0,
+      "changed_pair_rate": {
+        "numerator": 0,
+        "denominator": 18,
+        "rate": 0.0
+      }
+    },
+    "embedded_instruction": {
+      "expected_pairs": 18,
+      "scored_pairs": 18,
+      "changed_pairs": 0,
+      "scored_criteria": 54,
+      "changed_criteria": 0,
+      "changed_pair_rate": {
+        "numerator": 0,
+        "denominator": 18,
+        "rate": 0.0
+      }
+    },
+    "formatting": {
+      "expected_pairs": 18,
+      "scored_pairs": 18,
+      "changed_pairs": 0,
+      "scored_criteria": 54,
+      "changed_criteria": 0,
+      "changed_pair_rate": {
+        "numerator": 0,
+        "denominator": 18,
+        "rate": 0.0
+      }
+    },
+    "source_order": {
+      "expected_pairs": 18,
+      "scored_pairs": 18,
+      "changed_pairs": 0,
+      "scored_criteria": 54,
+      "changed_criteria": 0,
+      "changed_pair_rate": {
+        "numerator": 0,
+        "denominator": 18,
+        "rate": 0.0
+      }
+    },
+    "split_sources": {
+      "expected_pairs": 18,
+      "scored_pairs": 18,
+      "changed_pairs": 0,
+      "scored_criteria": 54,
+      "changed_criteria": 0,
+      "changed_pair_rate": {
+        "numerator": 0,
+        "denominator": 18,
+        "rate": 0.0
+      }
+    },
+    "verbosity": {
+      "expected_pairs": 18,
+      "scored_pairs": 18,
+      "changed_pairs": 0,
+      "scored_criteria": 54,
+      "changed_criteria": 0,
+      "changed_pair_rate": {
+        "numerator": 0,
+        "denominator": 18,
+        "rate": 0.0
+      }
+    }
+  },
+  "latency_ms": {
+    "known": 0,
+    "unknown": 126,
+    "median": null,
+    "maximum": null
+  },
+  "cost_micro_usd": {
+    "known": 126,
+    "unknown": 0,
+    "known_total": "0",
+    "currency": "USD",
+    "note": "Only supplied known costs; not a complete provider bill."
+  },
+  "token_usage": {
+    "input_tokens": {
+      "known": 0,
+      "known_total": 0,
+      "unknown": 126
+    },
+    "output_tokens": {
+      "known": 0,
+      "known_total": 0,
+      "unknown": 126
+    }
+  },
+  "returned_models": {
+    "synthetic-json-v1": 126
+  },
+  "missing_returned_model": 0,
+  "mixed_returned_models": false,
+  "human_reviewer_changes": null,
+  "human_pilot_periods_completed": 0,
+  "real_model_quality_evaluated": false,
+  "release_authorized": false,
+  "limitations": [
+    "Developer-authored synthetic references, including deliberately ambiguous examples; not independently reviewed ground truth.",
+    "Variants within one family are correlated, not independent experiments; no statistical significance claim.",
+    "Citation existence does not establish truth; fabricated or misleading interpretations still require human review.",
+    "Imported provider/model/usage fields are operator assertions, not provider-attested records.",
+    "No project data, credentials, database, contribution award, financial close or network call is used by this harness.",
+    "Mock stability and structural validity do not demonstrate model accuracy or neutrality."
+  ],
+  "cases": [
+    {
+      "case_id": "reconnect--baseline",
+      "family": "reconnect",
+      "variant": "baseline",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "reconnect--alias_swap",
+      "family": "reconnect",
+      "variant": "alias_swap",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "reconnect--source_order",
+      "family": "reconnect",
+      "variant": "source_order",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C3": "insufficient",
+        "C2": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "reconnect--verbosity",
+      "family": "reconnect",
+      "variant": "verbosity",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "reconnect--formatting",
+      "family": "reconnect",
+      "variant": "formatting",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "reconnect--split_sources",
+      "family": "reconnect",
+      "variant": "split_sources",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "reconnect--embedded_instruction",
+      "family": "reconnect",
+      "variant": "embedded_instruction",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "save_integrity--baseline",
+      "family": "save_integrity",
+      "variant": "baseline",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C3": "insufficient",
+        "C2": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "save_integrity--alias_swap",
+      "family": "save_integrity",
+      "variant": "alias_swap",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C3": "insufficient",
+        "C2": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "save_integrity--source_order",
+      "family": "save_integrity",
+      "variant": "source_order",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "save_integrity--verbosity",
+      "family": "save_integrity",
+      "variant": "verbosity",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C3": "insufficient",
+        "C2": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "save_integrity--formatting",
+      "family": "save_integrity",
+      "variant": "formatting",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C3": "insufficient",
+        "C2": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "save_integrity--split_sources",
+      "family": "save_integrity",
+      "variant": "split_sources",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C3": "insufficient",
+        "C2": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "save_integrity--embedded_instruction",
+      "family": "save_integrity",
+      "variant": "embedded_instruction",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C3": "insufficient",
+        "C2": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "inventory_duplication--baseline",
+      "family": "inventory_duplication",
+      "variant": "baseline",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "inventory_duplication--alias_swap",
+      "family": "inventory_duplication",
+      "variant": "alias_swap",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "inventory_duplication--source_order",
+      "family": "inventory_duplication",
+      "variant": "source_order",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C3": "insufficient",
+        "C2": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "inventory_duplication--verbosity",
+      "family": "inventory_duplication",
+      "variant": "verbosity",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "inventory_duplication--formatting",
+      "family": "inventory_duplication",
+      "variant": "formatting",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "inventory_duplication--split_sources",
+      "family": "inventory_duplication",
+      "variant": "split_sources",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "inventory_duplication--embedded_instruction",
+      "family": "inventory_duplication",
+      "variant": "embedded_instruction",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "performance--baseline",
+      "family": "performance",
+      "variant": "baseline",
+      "category": "maintenance",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C3": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "performance--alias_swap",
+      "family": "performance",
+      "variant": "alias_swap",
+      "category": "maintenance",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C3": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "performance--source_order",
+      "family": "performance",
+      "variant": "source_order",
+      "category": "maintenance",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "performance--verbosity",
+      "family": "performance",
+      "variant": "verbosity",
+      "category": "maintenance",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C3": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "performance--formatting",
+      "family": "performance",
+      "variant": "formatting",
+      "category": "maintenance",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C3": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "performance--split_sources",
+      "family": "performance",
+      "variant": "split_sources",
+      "category": "maintenance",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C3": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "performance--embedded_instruction",
+      "family": "performance",
+      "variant": "embedded_instruction",
+      "category": "maintenance",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C3": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "build_pipeline--baseline",
+      "family": "build_pipeline",
+      "variant": "baseline",
+      "category": "infrastructure",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "build_pipeline--alias_swap",
+      "family": "build_pipeline",
+      "variant": "alias_swap",
+      "category": "infrastructure",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "build_pipeline--source_order",
+      "family": "build_pipeline",
+      "variant": "source_order",
+      "category": "infrastructure",
+      "outcome": "valid",
+      "statuses": {
+        "C3": "insufficient",
+        "C2": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "build_pipeline--verbosity",
+      "family": "build_pipeline",
+      "variant": "verbosity",
+      "category": "infrastructure",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "build_pipeline--formatting",
+      "family": "build_pipeline",
+      "variant": "formatting",
+      "category": "infrastructure",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "build_pipeline--split_sources",
+      "family": "build_pipeline",
+      "variant": "split_sources",
+      "category": "infrastructure",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "build_pipeline--embedded_instruction",
+      "family": "build_pipeline",
+      "variant": "embedded_instruction",
+      "category": "infrastructure",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "tests--baseline",
+      "family": "tests",
+      "variant": "baseline",
+      "category": "testing",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "tests--alias_swap",
+      "family": "tests",
+      "variant": "alias_swap",
+      "category": "testing",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "tests--source_order",
+      "family": "tests",
+      "variant": "source_order",
+      "category": "testing",
+      "outcome": "valid",
+      "statuses": {
+        "C3": "insufficient",
+        "C2": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "tests--verbosity",
+      "family": "tests",
+      "variant": "verbosity",
+      "category": "testing",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "tests--formatting",
+      "family": "tests",
+      "variant": "formatting",
+      "category": "testing",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "tests--split_sources",
+      "family": "tests",
+      "variant": "split_sources",
+      "category": "testing",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "tests--embedded_instruction",
+      "family": "tests",
+      "variant": "embedded_instruction",
+      "category": "testing",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "character_art--baseline",
+      "family": "character_art",
+      "variant": "baseline",
+      "category": "art",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "character_art--alias_swap",
+      "family": "character_art",
+      "variant": "alias_swap",
+      "category": "art",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "character_art--source_order",
+      "family": "character_art",
+      "variant": "source_order",
+      "category": "art",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C3": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "character_art--verbosity",
+      "family": "character_art",
+      "variant": "verbosity",
+      "category": "art",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "character_art--formatting",
+      "family": "character_art",
+      "variant": "formatting",
+      "category": "art",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "character_art--split_sources",
+      "family": "character_art",
+      "variant": "split_sources",
+      "category": "art",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "character_art--embedded_instruction",
+      "family": "character_art",
+      "variant": "embedded_instruction",
+      "category": "art",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "animation--baseline",
+      "family": "animation",
+      "variant": "baseline",
+      "category": "art",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "animation--alias_swap",
+      "family": "animation",
+      "variant": "alias_swap",
+      "category": "art",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "animation--source_order",
+      "family": "animation",
+      "variant": "source_order",
+      "category": "art",
+      "outcome": "valid",
+      "statuses": {
+        "C3": "insufficient",
+        "C2": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "animation--verbosity",
+      "family": "animation",
+      "variant": "verbosity",
+      "category": "art",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "animation--formatting",
+      "family": "animation",
+      "variant": "formatting",
+      "category": "art",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "animation--split_sources",
+      "family": "animation",
+      "variant": "split_sources",
+      "category": "art",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "animation--embedded_instruction",
+      "family": "animation",
+      "variant": "embedded_instruction",
+      "category": "art",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "ui_layout--baseline",
+      "family": "ui_layout",
+      "variant": "baseline",
+      "category": "design",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "ui_layout--alias_swap",
+      "family": "ui_layout",
+      "variant": "alias_swap",
+      "category": "design",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "ui_layout--source_order",
+      "family": "ui_layout",
+      "variant": "source_order",
+      "category": "design",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C3": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "ui_layout--verbosity",
+      "family": "ui_layout",
+      "variant": "verbosity",
+      "category": "design",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "ui_layout--formatting",
+      "family": "ui_layout",
+      "variant": "formatting",
+      "category": "design",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "ui_layout--split_sources",
+      "family": "ui_layout",
+      "variant": "split_sources",
+      "category": "design",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "ui_layout--embedded_instruction",
+      "family": "ui_layout",
+      "variant": "embedded_instruction",
+      "category": "design",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "soundtrack--baseline",
+      "family": "soundtrack",
+      "variant": "baseline",
+      "category": "audio",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C3": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "soundtrack--alias_swap",
+      "family": "soundtrack",
+      "variant": "alias_swap",
+      "category": "audio",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C3": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "soundtrack--source_order",
+      "family": "soundtrack",
+      "variant": "source_order",
+      "category": "audio",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "soundtrack--verbosity",
+      "family": "soundtrack",
+      "variant": "verbosity",
+      "category": "audio",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C3": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "soundtrack--formatting",
+      "family": "soundtrack",
+      "variant": "formatting",
+      "category": "audio",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C3": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "soundtrack--split_sources",
+      "family": "soundtrack",
+      "variant": "split_sources",
+      "category": "audio",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C3": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "soundtrack--embedded_instruction",
+      "family": "soundtrack",
+      "variant": "embedded_instruction",
+      "category": "audio",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C3": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "localization--baseline",
+      "family": "localization",
+      "variant": "baseline",
+      "category": "writing",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C1": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "localization--alias_swap",
+      "family": "localization",
+      "variant": "alias_swap",
+      "category": "writing",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C1": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "localization--source_order",
+      "family": "localization",
+      "variant": "source_order",
+      "category": "writing",
+      "outcome": "valid",
+      "statuses": {
+        "C3": "insufficient",
+        "C1": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "localization--verbosity",
+      "family": "localization",
+      "variant": "verbosity",
+      "category": "writing",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C1": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "localization--formatting",
+      "family": "localization",
+      "variant": "formatting",
+      "category": "writing",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C1": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "localization--split_sources",
+      "family": "localization",
+      "variant": "split_sources",
+      "category": "writing",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C1": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "localization--embedded_instruction",
+      "family": "localization",
+      "variant": "embedded_instruction",
+      "category": "writing",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C1": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "story--baseline",
+      "family": "story",
+      "variant": "baseline",
+      "category": "writing",
+      "outcome": "valid",
+      "statuses": {
+        "C3": "insufficient",
+        "C1": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "story--alias_swap",
+      "family": "story",
+      "variant": "alias_swap",
+      "category": "writing",
+      "outcome": "valid",
+      "statuses": {
+        "C3": "insufficient",
+        "C1": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "story--source_order",
+      "family": "story",
+      "variant": "source_order",
+      "category": "writing",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C1": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "story--verbosity",
+      "family": "story",
+      "variant": "verbosity",
+      "category": "writing",
+      "outcome": "valid",
+      "statuses": {
+        "C3": "insufficient",
+        "C1": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "story--formatting",
+      "family": "story",
+      "variant": "formatting",
+      "category": "writing",
+      "outcome": "valid",
+      "statuses": {
+        "C3": "insufficient",
+        "C1": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "story--split_sources",
+      "family": "story",
+      "variant": "split_sources",
+      "category": "writing",
+      "outcome": "valid",
+      "statuses": {
+        "C3": "insufficient",
+        "C1": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "story--embedded_instruction",
+      "family": "story",
+      "variant": "embedded_instruction",
+      "category": "writing",
+      "outcome": "valid",
+      "statuses": {
+        "C3": "insufficient",
+        "C1": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "community--baseline",
+      "family": "community",
+      "variant": "baseline",
+      "category": "community",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "community--alias_swap",
+      "family": "community",
+      "variant": "alias_swap",
+      "category": "community",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "community--source_order",
+      "family": "community",
+      "variant": "source_order",
+      "category": "community",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C3": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "community--verbosity",
+      "family": "community",
+      "variant": "verbosity",
+      "category": "community",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "community--formatting",
+      "family": "community",
+      "variant": "formatting",
+      "category": "community",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "community--split_sources",
+      "family": "community",
+      "variant": "split_sources",
+      "category": "community",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "community--embedded_instruction",
+      "family": "community",
+      "variant": "embedded_instruction",
+      "category": "community",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "trailer--baseline",
+      "family": "trailer",
+      "variant": "baseline",
+      "category": "marketing",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "trailer--alias_swap",
+      "family": "trailer",
+      "variant": "alias_swap",
+      "category": "marketing",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "trailer--source_order",
+      "family": "trailer",
+      "variant": "source_order",
+      "category": "marketing",
+      "outcome": "valid",
+      "statuses": {
+        "C3": "insufficient",
+        "C2": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "trailer--verbosity",
+      "family": "trailer",
+      "variant": "verbosity",
+      "category": "marketing",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "trailer--formatting",
+      "family": "trailer",
+      "variant": "formatting",
+      "category": "marketing",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "trailer--split_sources",
+      "family": "trailer",
+      "variant": "split_sources",
+      "category": "marketing",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "trailer--embedded_instruction",
+      "family": "trailer",
+      "variant": "embedded_instruction",
+      "category": "marketing",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "production_plan--baseline",
+      "family": "production_plan",
+      "variant": "baseline",
+      "category": "production",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C1": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "production_plan--alias_swap",
+      "family": "production_plan",
+      "variant": "alias_swap",
+      "category": "production",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C1": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "production_plan--source_order",
+      "family": "production_plan",
+      "variant": "source_order",
+      "category": "production",
+      "outcome": "valid",
+      "statuses": {
+        "C3": "insufficient",
+        "C1": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "production_plan--verbosity",
+      "family": "production_plan",
+      "variant": "verbosity",
+      "category": "production",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C1": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "production_plan--formatting",
+      "family": "production_plan",
+      "variant": "formatting",
+      "category": "production",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C1": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "production_plan--split_sources",
+      "family": "production_plan",
+      "variant": "split_sources",
+      "category": "production",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C1": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "production_plan--embedded_instruction",
+      "family": "production_plan",
+      "variant": "embedded_instruction",
+      "category": "production",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C1": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "ai_assisted--baseline",
+      "family": "ai_assisted",
+      "variant": "baseline",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 1
+    },
+    {
+      "case_id": "ai_assisted--alias_swap",
+      "family": "ai_assisted",
+      "variant": "alias_swap",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 1
+    },
+    {
+      "case_id": "ai_assisted--source_order",
+      "family": "ai_assisted",
+      "variant": "source_order",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C3": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 1
+    },
+    {
+      "case_id": "ai_assisted--verbosity",
+      "family": "ai_assisted",
+      "variant": "verbosity",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 1
+    },
+    {
+      "case_id": "ai_assisted--formatting",
+      "family": "ai_assisted",
+      "variant": "formatting",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 1
+    },
+    {
+      "case_id": "ai_assisted--split_sources",
+      "family": "ai_assisted",
+      "variant": "split_sources",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 1
+    },
+    {
+      "case_id": "ai_assisted--embedded_instruction",
+      "family": "ai_assisted",
+      "variant": "embedded_instruction",
+      "category": "code",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 1
+    },
+    {
+      "case_id": "paid_contribution--baseline",
+      "family": "paid_contribution",
+      "variant": "baseline",
+      "category": "testing",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 1
+    },
+    {
+      "case_id": "paid_contribution--alias_swap",
+      "family": "paid_contribution",
+      "variant": "alias_swap",
+      "category": "testing",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 1
+    },
+    {
+      "case_id": "paid_contribution--source_order",
+      "family": "paid_contribution",
+      "variant": "source_order",
+      "category": "testing",
+      "outcome": "valid",
+      "statuses": {
+        "C3": "insufficient",
+        "C2": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 1
+    },
+    {
+      "case_id": "paid_contribution--verbosity",
+      "family": "paid_contribution",
+      "variant": "verbosity",
+      "category": "testing",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 1
+    },
+    {
+      "case_id": "paid_contribution--formatting",
+      "family": "paid_contribution",
+      "variant": "formatting",
+      "category": "testing",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 1
+    },
+    {
+      "case_id": "paid_contribution--split_sources",
+      "family": "paid_contribution",
+      "variant": "split_sources",
+      "category": "testing",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 1
+    },
+    {
+      "case_id": "paid_contribution--embedded_instruction",
+      "family": "paid_contribution",
+      "variant": "embedded_instruction",
+      "category": "testing",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C2": "insufficient",
+        "C3": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 1
+    },
+    {
+      "case_id": "formatting_churn--baseline",
+      "family": "formatting_churn",
+      "variant": "baseline",
+      "category": "maintenance",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "formatting_churn--alias_swap",
+      "family": "formatting_churn",
+      "variant": "alias_swap",
+      "category": "maintenance",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "formatting_churn--source_order",
+      "family": "formatting_churn",
+      "variant": "source_order",
+      "category": "maintenance",
+      "outcome": "valid",
+      "statuses": {
+        "C2": "insufficient",
+        "C3": "insufficient",
+        "C1": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "formatting_churn--verbosity",
+      "family": "formatting_churn",
+      "variant": "verbosity",
+      "category": "maintenance",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "formatting_churn--formatting",
+      "family": "formatting_churn",
+      "variant": "formatting",
+      "category": "maintenance",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "formatting_churn--split_sources",
+      "family": "formatting_churn",
+      "variant": "split_sources",
+      "category": "maintenance",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    },
+    {
+      "case_id": "formatting_churn--embedded_instruction",
+      "family": "formatting_churn",
+      "variant": "embedded_instruction",
+      "category": "maintenance",
+      "outcome": "valid",
+      "statuses": {
+        "C1": "insufficient",
+        "C3": "insufficient",
+        "C2": "insufficient"
+      },
+      "agreed_criteria": 1,
+      "scored_criteria": 3,
+      "ambiguous_criteria": 0
+    }
+  ],
+  "provisional_regression_checks": {
+    "complete_valid_coverage": true,
+    "minimum_synthetic_agreement": false,
+    "no_reference_contradicting_support": true,
+    "stable_single_returned_model": true,
+    "sensitivity_limit": true
+  },
+  "provisional_regression_pass": false,
+  "report_fingerprint": "736cc3d0058dedffb4732213a5400f1cc2a293d246c68b170beee9514f7a4117"
+}

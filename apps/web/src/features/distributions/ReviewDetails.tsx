@@ -1,0 +1,20 @@
+import { Badge } from '../../components/shared.js';
+import { formatCents } from '../../lib/simulator.js';
+import { formatShare as formatRatio } from '../../lib/reviews.js';
+import { formatFinanceAtoms as formatUnits } from '../../lib/finance.js';
+import { formatSignedCents, type ReviewRecord } from '../../lib/finance.js';
+
+export function ReviewDetails({record,frozen=false}:{record:ReviewRecord;frozen?:boolean}) {
+ if(record.kind==='release_correction')return <section className="panel"><h3>Prospective release-attribution correction</h3><p>{record.notice}</p><p>Same {record.before.roster.award_ids.length} underlying awards and {formatUnits(record.before.roster.denominator_atoms)} units. Version {record.before.version} → {record.after.version}.</p>
+ {(['before','after'] as const).map(key=><div key={key}><h4>{key==='before'?'Previously frozen attribution':'Corrected future attribution'}</h4>{record[key].roster.recipients.map(r=><p key={r.user_id}>{record[key].roster.names.find(n=>n.user_id===r.user_id)?.display_name??r.user_id}: {formatUnits(r.atoms)} / {formatUnits(record[key].roster.denominator_atoms)} units ({formatRatio(r.atoms,record[key].roster.denominator_atoms)})</p>)}</div>)}
+ {record.blockers.length>0&&<p role="alert">Blocked: {record.blockers.join(', ').replaceAll('_',' ')}</p>}<details><summary>Inspect exact correction inputs</summary><pre className="code-block">{JSON.stringify(record,null,2)}</pre></details></section>;
+ const cash=record.cash;const names=new Map(record.people.map(p=>[p.user_id,p.display_name]));
+ return <section className="panel"><h3>Synthetic distribution for {record.period.record.month}</h3><p>{record.coverage_notice}</p>
+ <div className="metrics-grid">{[['Net balance',cash.net_cents],['Available to distribute',cash.distributable_cents],['Reserve carried forward',cash.closing_reserve_cents],['Deficit carried forward',cash.closing_deficit_cents]].map(([name,value])=><div className="metric-card" key={String(name)}><span>{name}</span><strong>{formatSignedCents(Number(value))}</strong></div>)}</div>
+ <p>Opening reserve: {formatCents(cash.opening_reserve_cents)}. Opening deficit: {formatSignedCents(cash.opening_deficit_cents)}.</p><details open><summary>Approved financial amounts</summary>{Object.entries(cash.entries_by_kind_cents).map(([kind,value])=><p key={kind}>{kind.replaceAll('_',' ')}: {formatCents(value)}</p>)}</details>
+ <p>{record.release.proposed_initial_freeze?(frozen?'This first close froze':'This first close will freeze'):'This close uses frozen'} release version {record.release.record.version}, containing {record.release.record.roster.award_ids.length} awards and {formatUnits(record.release.record.roster.denominator_atoms)} units. Newly accepted release work cannot silently dilute that roster.</p>
+ {record.blockers.length>0?<div className="error-panel" role="alert"><strong>This close is blocked.</strong>{record.blockers.map(b=><p key={b}>{b.replaceAll('_',' ')}</p>)}</div>:<Badge>{frozen?'Frozen calculation reproduced':'Ready for explicit review, not yet approved'}</Badge>}
+ <div className="table-scroll"><table><caption>Proposed recipient amounts (synthetic)</caption><thead><tr><th scope="col">Contributor</th><th scope="col">Amount</th></tr></thead><tbody>{record.result.people.map(p=><tr key={p.user_id}><td>{names.get(p.user_id)??p.user_id}</td><td>{formatCents(p.amount_cents)}</td></tr>)}</tbody></table></div>
+ {record.result.pools.map(pool=><details key={pool.key}><summary>{pool.key}: {formatCents(pool.amount_cents)} · {formatUnits(pool.denominator_atoms)} eligible units</summary><p>{pool.status}; unallocated: {formatCents(pool.unallocated_cents)}.</p>{pool.allocations.map(line=><p key={line.key}>{names.get(line.key)??line.key}: {formatUnits(line.weight)} / {formatUnits(line.denominator)} units → {formatCents(line.floor_cents)} + {line.rounding_cent} rounding cent = {formatCents(line.amount_cents)}.</p>)}</details>)}
+ <details><summary>Inspect all preserved financial and contribution inputs</summary><pre className="code-block">{JSON.stringify(record,null,2)}</pre></details></section>;
+}

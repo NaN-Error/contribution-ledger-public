@@ -1,0 +1,48 @@
+{
+  "version": "synthetic-evidence-corpus-v1",
+  "reference_origin": "synthetic_author_expectation_not_human_review",
+  "thresholds_fingerprint": "0cb37b853de644264848ba6f09eca13a9dc42a1b6900cd2b4c896538b8d0a930",
+  "independent_real_project_count": 0,
+  "scenario_family_count": 24,
+  "variant_count_per_family": 7,
+  "splits": {
+    "calibration": {
+      "path": "fixtures/calibration.json",
+      "sha256": "22a755f7aef1e42edae024a08cd05b60eb64284c1766840c53d7af53c937ae0c",
+      "case_count": 126,
+      "families": [
+        "ai_assisted",
+        "animation",
+        "build_pipeline",
+        "character_art",
+        "community",
+        "formatting_churn",
+        "inventory_duplication",
+        "localization",
+        "paid_contribution",
+        "performance",
+        "production_plan",
+        "reconnect",
+        "save_integrity",
+        "soundtrack",
+        "story",
+        "tests",
+        "trailer",
+        "ui_layout"
+      ]
+    },
+    "holdout": {
+      "path": "holdout/cases.json",
+      "sha256": "bf45b2ea4a32675e4ff9fa65c29026dd1e90705dfbbb255954ae714ffc5c3b36",
+      "case_count": 42,
+      "families": [
+        "accessibility",
+        "anti_cheat",
+        "asset_provenance",
+        "audio_mix",
+        "compatibility",
+        "prototype_research"
+      ]
+    }
+  }
+}

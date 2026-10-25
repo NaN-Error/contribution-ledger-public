@@ -1,0 +1,23 @@
+{
+  "status": "ready",
+  "api": "ok",
+  "environment": "development",
+  "version": "0.1.0-phase1",
+  "phase": 1,
+  "checked_at": "2026-09-13T12:00:00Z",
+  "database": {
+    "status": "ok",
+    "message": "Connected"
+  },
+  "migrations": {
+    "status": "current",
+    "current_revision": "0001_foundation",
+    "expected_revision": "0001_foundation"
+  },
+  "persistence": {
+    "status": "empty",
+    "marker_id": null,
+    "created_at": null
+  },
+  "development_tools_enabled": true
+}

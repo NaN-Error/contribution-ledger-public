@@ -1,0 +1,30 @@
+{
+    admin off
+    auto_https off
+}
+https://{$CL_STAGING_HOST}:8443 {
+    tls /run/tls/server.crt /run/tls/server.key
+    @outside not remote_ip {$CL_STAGING_CIDRS}
+    respond @outside "Access restricted" 403
+    @blocked path /docs* /openapi.json /redoc* /api/v1/github* /github/*
+    respond @blocked 404
+    request_body {
+        max_size 3MB
+    }
+    header {
+        Strict-Transport-Security "max-age=86400"
+        X-Content-Type-Options nosniff
+        Referrer-Policy no-referrer
+        X-Frame-Options DENY
+        -Server
+    }
+    reverse_proxy web:5173 {
+        header_up -X-Forwarded-For
+        header_up -X-Forwarded-Host
+        header_up -Forwarded
+        transport http {
+            dial_timeout 5s
+            response_header_timeout 20s
+        }
+    }
+}

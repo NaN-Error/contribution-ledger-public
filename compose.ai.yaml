@@ -1,0 +1,74 @@
+# Explicit optional AI foundation. Normal compose.yaml remains manual-only.
+# Requires scripts/ai.ps1 -Action init (or scripts/ai.sh init) first.
+x-ai-environment: &ai-environment
+  CL_AI_DEPLOYMENT_MODE: ${CL_AI_DEPLOYMENT_MODE:-disabled}
+  CL_AI_EVIDENCE_ENABLED: ${CL_AI_EVIDENCE_ENABLED:-false}
+  CL_AI_LIVE_ENABLED: ${CL_AI_LIVE_ENABLED:-false}
+  CL_AI_PAID_PROBES_ENABLED: ${CL_AI_PAID_PROBES_ENABLED:-false}
+  CL_AI_PERMITTED_PROVIDERS: ${CL_AI_PERMITTED_PROVIDERS:-[]}
+  CL_AI_CREDENTIAL_ROOT: /var/lib/contribution-ledger/ai-credentials
+  CL_AI_MASTER_KEY_FILE: /var/lib/contribution-ledger/ai-master/master.key
+
+x-ai-worker-base: &ai-worker-base
+  image: contribution-ledger-api:0.16.2-phase16
+  build: {context: ., dockerfile: infra/api.Dockerfile, target: base}
+  init: true
+  security_opt: [no-new-privileges:true]
+  cap_drop: [ALL]
+  read_only: true
+  tmpfs: [/tmp]
+
+services:
+  api:
+    environment:
+      <<: *ai-environment
+    volumes:
+      - ai_credentials:/var/lib/contribution-ledger/ai-credentials
+      - ai_master:/var/lib/contribution-ledger/ai-master:ro
+  ai-worker:
+    <<: *ai-worker-base
+    environment:
+      <<: *ai-environment
+      CL_ENVIRONMENT: ${CL_ENVIRONMENT:-development}
+      CL_DB_HOST: db
+      CL_DB_PORT: "5432"
+      CL_DB_NAME: ${CL_DB_NAME:-contribution_ledger}
+      CL_DB_USER: contribution_ledger_ai_worker
+      CL_DB_PASSWORD: ${CL_AI_DB_PASSWORD:?Run scripts/ai.ps1 -Action init first}
+    volumes:
+      - ai_credentials:/var/lib/contribution-ledger/ai-credentials:ro
+      - ai_master:/var/lib/contribution-ledger/ai-master:ro
+    command: [python, -m, app.workers.ai]
+    depends_on:
+      db: {condition: service_healthy}
+      api: {condition: service_healthy}
+    labels: {com.contribution-ledger.optional: ai}
+    restart: unless-stopped
+  ai-init:
+    <<: *ai-worker-base
+    profiles: [tools]
+    network_mode: none
+    environment:
+      CL_DB_PASSWORD: isolated-initialization-does-not-connect-to-database
+      CL_AI_CREDENTIAL_ROOT: /var/lib/contribution-ledger/ai-credentials
+      CL_AI_MASTER_KEY_FILE: /var/lib/contribution-ledger/ai-master/master.key
+    volumes:
+      - ai_credentials:/var/lib/contribution-ledger/ai-credentials
+      - ai_master:/var/lib/contribution-ledger/ai-master
+    command: [python, -m, app.ai.operator, initialize, --confirm, INITIALIZE_AI_STORAGE]
+    restart: "no"
+  ai-provision:
+    <<: *ai-worker-base
+    profiles: [tools]
+    environment:
+      CL_DB_HOST: db
+      CL_DB_PORT: "5432"
+      CL_DB_NAME: ${CL_DB_NAME:-contribution_ledger}
+      CL_DB_USER: ${CL_DB_USER:-contribution_ledger}
+      CL_DB_PASSWORD: ${CL_DB_PASSWORD:?Preserve the existing database password}
+      CL_AI_DB_PASSWORD: ${CL_AI_DB_PASSWORD:?Run AI init first}
+    command: [python, -m, app.ai.operator, provision-worker, --confirm, PROVISION_AI_WORKER]
+    restart: "no"
+volumes:
+  ai_credentials:
+  ai_master:

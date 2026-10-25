@@ -1,0 +1,6 @@
+# Preserve archive/manifest bytes across Windows and Linux checkouts.
+# PowerShell accepts LF; automatic conversion invalidates source checksums.
+* -text
+* whitespace=cr-at-eol
+*.png binary
+*.zip binary

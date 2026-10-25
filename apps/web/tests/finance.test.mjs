@@ -1,0 +1,20 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {positiveMoney,formatSignedCents,financeCommand,requireReviewed,entryState,assertSyntheticClose,financeDownloadPath,parseDeducted,financeKinds,formatFinanceAtoms} from '../.test-build/lib/finance.js';
+const A='00000000-0000-0000-0000-000000000001',B='00000000-0000-0000-0000-000000000002',C='00000000-0000-0000-0000-000000000003';
+const root=`/api/v1/workspaces/${A}/projects/${B}/finance`;
+for(const [text,amount] of [['0.01',1],['1000.00',100000],[' 2.50 ',250]])test(`positive financial input ${text}`,()=>assert.equal(positiveMoney(text),amount));
+for(const input of ['0','0.00','-1','1.001','=2+2','1e3','1,000','NaN'])test(`reject financial money ${input}`,()=>assert.throws(()=>positiveMoney(input)));
+for(const [amount,text] of [[-1,'−$0.01'],[-1000,'−$10.00'],[0,'$0.00'],[1000,'$10.00']])test(`signed financial cents ${amount}`,()=>assert.equal(formatSignedCents(amount),text));
+for(const value of [NaN,Infinity,1.2,true,'100',1000000000001])test(`reject invalid financial display ${String(value)}`,()=>assert.throws(()=>formatSignedCents(value)));
+test('finance commands have independent UUIDs and trimmed reasons',()=>{const a=financeCommand('  Record an inspected synthetic financial entry.  '),b=financeCommand(a.reason);assert.notEqual(a.request_id,b.request_id);assert.equal(a.reason,a.reason.trim());assert.throws(()=>financeCommand('short'));assert.throws(()=>financeCommand('a'.repeat(501)));});
+test('review is explicit strict true',()=>{assert.equal(requireReviewed(true),true);for(const value of [false,'true',1,undefined])assert.throws(()=>requireReviewed(value));});
+test('financial state labels do not imply payment',()=>{assert.equal(entryState('pending'),'Needs approval');assert.equal(entryState('approve'),'Approved');assert.equal(entryState('reject'),'Rejected');assert.equal(entryState('void'),'Voided declaration');});
+for(const format of ['json','csv','zip'])test(`scoped immutable ${format} path`,()=>assert.equal(financeDownloadPath(root,C,format),`${root}/closes/${C}/export?format=${format}`));
+for(const [base,id,format] of [['https://evil.test',C,'json'],[root,'../x','csv'],[root,C,'pdf'],[root+'?secret=x',C,'zip'],[root,C+'?token=x','json']])test(`reject export path ${base}/${id}/${format}`,()=>assert.throws(()=>financeDownloadPath(base,id,format)));
+test('already-deducted fields trim and forbid repeated categories',()=>{assert.deepEqual(parseDeducted('platform_fees, refunds '),['platform_fees','refunds']);assert.throws(()=>parseDeducted('refunds,refunds'));assert.deepEqual(parseDeducted(''),[]);});
+test('only exact reproduced synthetic close is accepted',()=>{const sample={record:{kind:'synthetic_distribution_close',synthetic_only:true,real_payment_authorized:false},reproduced:true};assert.equal(assertSyntheticClose(sample),sample);for(const change of [{kind:'real_close'},{synthetic_only:false},{real_payment_authorized:true}])assert.throws(()=>assertSyntheticClose({...sample,record:{...sample.record,...change}}));assert.throws(()=>assertSyntheticClose({...sample,reproduced:false}));});
+test('financial kinds stay distinct from contribution awards and payment commands',()=>assert.deepEqual(financeKinds,['receipt','deduction','reserve_hold','reserve_release','adjustment_credit','adjustment_debit']));
+
+test('aggregate credit display exceeds an individual milestone bound without losing atoms',()=>{assert.equal(formatFinanceAtoms(2000000000001),'2,000,000,000.001');assert.equal(formatFinanceAtoms(9007199254740991),'9,007,199,254,740.991');});
+test('aggregate credit display rejects inexact inputs',()=>{for(const x of [-1,1.1,Infinity,NaN,'100',true,Number.MAX_SAFE_INTEGER+1])assert.throws(()=>formatFinanceAtoms(x));assert.equal(formatFinanceAtoms(0),'0');});

@@ -1,0 +1,26 @@
+Contribution Ledger 0.17.8 - Windows x64
+
+1. Download the Windows x64 release ZIP, not GitHub's source ZIP.
+2. Extract the complete folder and double-click Start.cmd.
+3. Paste repository links in the dashboard and confirm the read.
+4. Find repository activity dates, check the dates, then Analyze repositories.
+5. Open a contributor and contribution to see the supporting evidence.
+
+Public repositories need no GitHub login. For private links, expand Connect GitHub
+and choose an existing GitHub CLI login or a fine-grained read-only token limited
+to selected repositories. No repository code is installed or run.
+
+The Windows package includes Python, Node and PostgreSQL. First startup may take
+several minutes. A missing Microsoft C++ runtime opens verified official setup
+for your approval. No Docker, signup or setup-code copying is needed.
+
+Personal data is separate at %LOCALAPPDATA%\ContributionLedger\Personal.
+Keep it private and preserve database/evidence/credential/master files together.
+Stop.cmd stops the application without deleting data. Closing the browser keeps
+it running. Reopen Start.cmd to return to the dashboard.
+
+Source downloads do not contain runtime binaries. Download the Windows package:
+https://github.com/NaN-Error/contribution-ledger-public/releases
+
+Experimental local software. Proposed values require review. Financial examples
+are hypothetical/synthetic; no money moves. Read README.md and SECURITY.md.

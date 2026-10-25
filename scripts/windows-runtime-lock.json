@@ -1,0 +1,32 @@
+{
+  "platform": "Windows x64",
+  "archives": [
+    {
+      "filename": "python-3.13.16-embed-amd64.zip",
+      "url": "https://www.python.org/ftp/python/3.13.16/python-3.13.16-embed-amd64.zip",
+      "sha256": "97dae5274cc54867065e8d5a3226e48c35017ed332a0fdb0e27d5b5821961297",
+      "bytes": 11439094
+    },
+    {
+      "filename": "node-v22.23.0-win-x64.zip",
+      "url": "https://nodejs.org/dist/v22.23.0/node-v22.23.0-win-x64.zip",
+      "sha256": "425a5bd68cc95e8eb16bcccd0a75081b48983fc6a26f67126bd4d6c7198231e8",
+      "bytes": 35681216
+    },
+    {
+      "filename": "postgresql-17.11-windows-x64-binaries.zip",
+      "url": "https://get.enterprisedb.com/postgresql/postgresql-17.11-windows-x64-binaries.zip",
+      "sha256": "b9424ee7bc60b52450ff910a3630225df32e633f3cb29c1d126d9299d59aea28",
+      "bytes": 379726839,
+      "checksum_origin": "Hash of retained official EDB archive used in prior native verification; not an independently signed publisher hash."
+    }
+  ],
+  "optional_windows_prerequisite": {
+    "filename": "vc_redist.x64.exe",
+    "url": "https://aka.ms/vs/17/release/vc_redist.x64.exe",
+    "resolved_download_url": "https://download.visualstudio.microsoft.com/download/pr/bd1c8d9d-ba95-4eee-bc6e-df1fcc876373/CC0FF0EB1DC3F5188AE6300FAEF32BF5BEEBA4BDD6E8E445A9184072096B713B/VC_redist.x64.exe",
+    "sha256": "cc0ff0eb1dc3f5188ae6300faef32bf5beeba4bdd6e8e445a9184072096b713b",
+    "bytes": 25635768,
+    "distribution": "Not bundled. If Windows lacks the shared C++ runtime, Start downloads this pinned Microsoft installer and opens its interactive setup."
+  }
+}

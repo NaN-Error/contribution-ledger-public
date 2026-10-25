@@ -1,0 +1,15 @@
+{
+  "version": "failure-drill-map-v1",
+  "scope": "synthetic and mocked development tests, not live fault injection",
+  "drills": [
+    {"topic": "alias/order/verbosity/formatting/source fragmentation/injection", "files": ["tests/test_evaluation_corpus.py", "tests/test_evaluation_reporting.py"]},
+    {"topic": "missing/invalid/refused/truncated/retired model outputs", "files": ["tests/test_evaluation_reporting.py", "tests/test_ai_assessment_output.py"]},
+    {"topic": "disclosure, payer authorization, stale evidence and assessment retention", "files": ["tests/test_ai_assessment_workflow.py"]},
+    {"topic": "attribution, duplicate sources and reconstruction boundaries", "files": ["tests/test_reconstruction_safety.py"]},
+    {"topic": "financial integrity, duplicate closes and replay", "files": ["tests/test_finance_integrity.py"]},
+    {"topic": "native assessment concurrency and grants, not executed here", "files": ["tests/test_postgres_assessments.py"]}
+  ],
+  "all_drills_independently_audited": false,
+  "human_pilot_complete": false,
+  "real_use_authorized": false
+}

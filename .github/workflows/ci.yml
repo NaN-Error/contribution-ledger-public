@@ -1,0 +1,142 @@
+name: Application verification
+"on":
+  push:
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
+      - 'AGENTS.md'
+      - 'CHANGELOG.md'
+      - 'release-manifest.json'
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  application-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    services:
+      postgres:
+        image: postgres:17.11-bookworm
+        env:
+          POSTGRES_USER: ledger_test
+          POSTGRES_PASSWORD: synthetic_ci_password_not_a_secret
+          POSTGRES_DB: contribution_ledger_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U ledger_test -d contribution_ledger_test"
+          --health-interval 5s --health-timeout 5s --health-retries 15
+      redis:
+        image: redis:7.4.11-bookworm
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd "redis-cli ping" --health-interval 5s --health-timeout 3s --health-retries 15
+    env:
+      CL_TEST_BROKER_URL: redis://127.0.0.1:6379/15
+      CL_ENVIRONMENT: development
+      CL_ENABLE_DEVELOPMENT_TOOLS: 'true'
+      CL_ALLOWED_ORIGINS: '["http://127.0.0.1:5173","http://localhost:5173"]'
+      CL_E2E_ALLOW_ACCOUNT_CREATION: '1'
+      CL_E2E_ALLOW_MFA_ENROLLMENT: '1'
+      CL_AUTH_MASTER_KEY_FILE: /tmp/contribution-ledger-e2e-auth/master.key
+      CL_OBJECT_STORAGE_ROOT: /tmp/contribution-ledger-e2e-evidence
+      CL_DB_HOST: 127.0.0.1
+      CL_DB_USER: ledger_test
+      CL_DB_PASSWORD: synthetic_ci_password_not_a_secret
+      CL_DB_NAME: contribution_ledger_test
+      CL_TEST_DATABASE_URL: postgresql+psycopg://ledger_test:synthetic_ci_password_not_a_secret@127.0.0.1:5432/contribution_ledger_test
+      PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.14'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - name: Verify source structure
+        run: |
+          python scripts/check_publication.py
+          python scripts/verify_release.py
+          python scripts/verify_source.py
+      - name: Install exact Python pins
+        run: |
+          python -m pip install pip==26.2
+          python -m pip install --no-deps -r apps/api/requirements-dev.lock
+          python -m pip install --no-deps -r apps/api/requirements-jobs.lock
+          python -m pip check
+      - name: Run application, native PostgreSQL and optional transport contracts
+        working-directory: apps/api
+        run: python -m pytest -q
+      - name: Run offline synthetic calibration (not a model quality claim)
+        run: python scripts/evaluate.py mock --output .local/evaluation/ci-calibration
+      - name: Install, test and build frontend
+        working-directory: apps/web
+        run: |
+          npm ci --no-fund --no-audit
+          npm test
+          npm run build
+      - name: Start native processes
+        run: |
+          (cd apps/api && python -m app.cli migrate)
+          (cd apps/api && python -m app.cli init-security)
+          (cd apps/api && python -m uvicorn app.main:create_app --factory --host 127.0.0.1 --port 8000 --no-access-log --no-proxy-headers) > /tmp/ledger-api.log 2>&1 &
+          (cd apps/web && node server.mjs) > /tmp/ledger-web.log 2>&1 &
+          python scripts/wait_ready.py
+      - name: Install browser and run actual UI smoke
+        run: |
+          python -m playwright install --with-deps chromium
+          python tests/e2e/browser_smoke.py
+          python tests/e2e/accounts_smoke.py
+          python tests/e2e/github_callback_smoke.py
+      - name: Render prepared synthetic credit, assessment, simulator, finance and reconstruction workflows
+        env:
+          CL_E2E_ALLOW_FEATURE_FIXTURES: '1'
+        run: python tests/e2e/feature_acceptance.py
+      - name: Render repository-first capture, contributor profiles and exact draft scenarios
+        env:
+          CL_E2E_ALLOW_ANALYSIS_FIXTURES: '1'
+        run: python tests/e2e/repository_analysis_acceptance.py
+      - name: Render reviewed dashboard handoff and independent contribution credit
+        env:
+          CL_E2E_ALLOW_ANALYSIS_FIXTURES: '1'
+        run: python tests/e2e/analysis_handoff_acceptance.py
+      - name: Exercise native paired recovery in new synthetic databases
+        env:
+          CL_E2E_ALLOW_NATIVE_RECOVERY: '1'
+        run: |
+          if ! test -x /usr/lib/postgresql/17/bin/pg_dump; then
+            sudo install -d /usr/share/postgresql-common/pgdg
+            sudo curl --fail --silent --show-error -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc https://www.postgresql.org/media/keys/ACCC4CF8.asc
+            . /etc/os-release
+            printf 'deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt %s-pgdg main\n' "$VERSION_CODENAME" | sudo tee /etc/apt/sources.list.d/pgdg.list > /dev/null
+            sudo apt-get update
+            sudo apt-get install -y postgresql-client-17
+          fi
+          export PATH="/usr/lib/postgresql/17/bin:$PATH"
+          python tests/e2e/native_recovery_acceptance.py
+  docker-stack:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and start the documented stack
+        run: bash scripts/manage.sh start
+      - name: Check marker survives restart and outages are visible
+        run: python3 scripts/check_stack.py --allow-synthetic-seed
+      - name: Exercise stopped-writer Docker backup and isolated restoration
+        run: |
+          python3 -m venv "$RUNNER_TEMP/recovery-tools"
+          "$RUNNER_TEMP/recovery-tools/bin/python" -m pip install pip==26.2 cryptography==50.0.0 cffi==2.0.0 pycparser==3.0
+          "$RUNNER_TEMP/recovery-tools/bin/python" scripts/recovery.py keygen --key-file "$RUNNER_TEMP/recovery-key/master.key"
+          "$RUNNER_TEMP/recovery-tools/bin/python" scripts/recovery.py backup --project contribution-ledger --env-file .env --key-file "$RUNNER_TEMP/recovery-key/master.key" --scratch "$RUNNER_TEMP/recovery-scratch" --output "$RUNNER_TEMP/capture" --confirm STOP-WRITERS:contribution-ledger
+          for restore_attempt in 1 2 3; do
+            target="ledger-restore-ci-$restore_attempt"
+            "$RUNNER_TEMP/recovery-tools/bin/python" scripts/recovery.py restore --target "$target" --data "$RUNNER_TEMP/capture/data.clb" --recovery "$RUNNER_TEMP/capture/recovery.clb" --key-file "$RUNNER_TEMP/recovery-key/master.key" --scratch "$RUNNER_TEMP/recovery-scratch" --output "$RUNNER_TEMP/restore-$restore_attempt" --confirm "RESTORE-ISOLATED:$target"
+            docker inspect "$target-db" --format '{{.HostConfig.NetworkMode}} {{json .HostConfig.PortBindings}}'
+          done
+      - name: Stop stack without deleting its volume
+        if: always()
+        run: docker compose down --remove-orphans

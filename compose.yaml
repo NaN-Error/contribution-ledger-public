@@ -1,0 +1,111 @@
+name: contribution-ledger
+
+x-api-environment: &api-environment
+  CL_ENVIRONMENT: ${CL_ENVIRONMENT:-development}
+  CL_ENABLE_DEVELOPMENT_TOOLS: ${CL_ENABLE_DEVELOPMENT_TOOLS:-false}
+  CL_REPOSITORY_PUBLIC_READS_ENABLED: ${CL_REPOSITORY_PUBLIC_READS_ENABLED:-true}
+  # Exact browser origins follow the configured local web port. Not a wildcard.
+  CL_ALLOWED_ORIGINS: '["http://127.0.0.1:${CL_WEB_PORT:-5173}","http://localhost:${CL_WEB_PORT:-5173}"]'
+  CL_SECURE_COOKIES: "false"
+  CL_AUTH_MASTER_KEY_FILE: /var/lib/contribution-ledger/auth-master/master.key
+  CL_OBJECT_STORAGE_BACKEND: local
+  CL_OBJECT_STORAGE_ROOT: /var/lib/contribution-ledger/evidence
+  CL_EVIDENCE_WORKSPACE_QUOTA_BYTES: "268435456"
+  CL_DB_HOST: db
+  CL_DB_PORT: "5432"
+  CL_DB_NAME: ${CL_DB_NAME:-contribution_ledger}
+  CL_DB_USER: ${CL_DB_USER:-contribution_ledger}
+  CL_DB_PASSWORD: ${CL_DB_PASSWORD:?Initialize .env using scripts/init-env.ps1}
+
+x-api-base: &api-base
+  image: contribution-ledger-api:0.17.5-phase17
+  build:
+    context: .
+    dockerfile: infra/api.Dockerfile
+    target: base
+  environment: *api-environment
+  init: true
+  security_opt:
+    - no-new-privileges:true
+  cap_drop: [ALL]
+  read_only: true
+  tmpfs: [/tmp]
+
+services:
+  db:
+    image: postgres:17.11-bookworm
+    environment:
+      POSTGRES_DB: ${CL_DB_NAME:-contribution_ledger}
+      POSTGRES_USER: ${CL_DB_USER:-contribution_ledger}
+      POSTGRES_PASSWORD: ${CL_DB_PASSWORD:?Initialize .env using scripts/init-env.ps1}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"']
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+    restart: unless-stopped
+    # No host database port is published.
+  api:
+    <<: *api-base
+    volumes:
+      - evidence_data:/var/lib/contribution-ledger/evidence
+      - auth_master:/var/lib/contribution-ledger/auth-master:ro
+    ports:
+      - "127.0.0.1:${CL_API_PORT:-8000}:8000"
+    depends_on:
+      db: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready',timeout=5)"]
+      interval: 5s
+      timeout: 6s
+      retries: 12
+      start_period: 10s
+    restart: unless-stopped
+  security-init:
+    <<: *api-base
+    profiles: [tools]
+    command: [python, -m, app.cli, init-security]
+    volumes:
+      - auth_master:/var/lib/contribution-ledger/auth-master
+    depends_on:
+      db: {condition: service_healthy}
+    restart: "no"
+  migrate:
+    <<: *api-base
+    profiles: [tools]
+    command: [python, -m, app.cli, migrate]
+    depends_on:
+      db: {condition: service_healthy}
+    restart: "no"
+  web:
+    image: contribution-ledger-web:0.17.5-phase17
+    build:
+      context: .
+      dockerfile: infra/web.Dockerfile
+      target: runtime
+    environment:
+      CL_API_TARGET: http://api:8000
+    ports:
+      - "127.0.0.1:${CL_WEB_PORT:-5173}:5173"
+    depends_on:
+      api: {condition: service_healthy}
+    init: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: [ALL]
+    read_only: true
+    tmpfs: [/tmp]
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:5173/web-health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+volumes:
+  auth_master:
+  evidence_data:
+  postgres_data:

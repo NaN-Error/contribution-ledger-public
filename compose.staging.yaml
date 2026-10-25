@@ -1,0 +1,115 @@
+# Standalone restricted synthetic deployment, not an overlay for compose.yaml.
+# Use scripts/staging.ps1 / staging.sh; do not publish this through a generic tunnel.
+name: contribution-ledger-staging
+x-runtime: &runtime
+  image: contribution-ledger-api:0.16.2-phase16
+  build: {context: ., dockerfile: infra/api.Dockerfile, target: base}
+  init: true
+  read_only: true
+  tmpfs: [/tmp]
+  security_opt: [no-new-privileges:true]
+  cap_drop: [ALL]
+  pids_limit: 128
+  mem_limit: 1g
+  networks: [private]
+x-settings: &settings
+  CL_ENVIRONMENT: staging
+  CL_RESTRICTED_STAGING_ENABLED: "true"
+  CL_ENABLE_DEVELOPMENT_TOOLS: "false"
+  CL_REQUIRE_MFA: "true"
+  CL_SECURE_COOKIES: "true"
+  CL_ALLOWED_ORIGINS: '["https://${CL_STAGING_HOST:?Configure an HTTPS hostname}:8443"]'
+  CL_ALLOWED_HOSTS: '["api","127.0.0.1","${CL_STAGING_HOST:?Configure an HTTPS hostname}"]'
+  CL_DB_HOST: db
+  CL_DB_NAME: contribution_ledger
+  CL_DB_USER: contribution_ledger_runtime
+  CL_DB_PASSWORD: ${CL_RUNTIME_DB_PASSWORD:?Generate a separate API role password}
+  CL_AUTH_MASTER_KEY_FILE: /var/lib/contribution-ledger/auth-master/master.key
+  CL_OBJECT_STORAGE_BACKEND: local
+  CL_OBJECT_STORAGE_ROOT: /var/lib/contribution-ledger/evidence
+  CL_GITHUB_ENABLED: "false"
+  CL_AI_DEPLOYMENT_MODE: disabled
+  CL_AI_LIVE_ENABLED: "false"
+  CL_AI_PAID_PROBES_ENABLED: "false"
+  CL_AI_EVIDENCE_ENABLED: "false"
+services:
+  db:
+    image: postgres:17.11-bookworm
+    environment:
+      POSTGRES_DB: contribution_ledger
+      POSTGRES_USER: contribution_ledger
+      POSTGRES_PASSWORD: ${CL_STAGING_DB_PASSWORD:?Generate the operator database password}
+    volumes: [postgres_data:/var/lib/postgresql/data]
+    networks: [private]
+    restart: "no"
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  operator:
+    <<: *runtime
+    profiles: [tools]
+    environment:
+      <<: *settings
+      CL_DB_USER: contribution_ledger
+      CL_DB_PASSWORD: ${CL_STAGING_DB_PASSWORD:?Generate the operator database password}
+      CL_RUNTIME_DB_PASSWORD: ${CL_RUNTIME_DB_PASSWORD:?Generate separate API credentials}
+    volumes:
+      - auth_master:/var/lib/contribution-ledger/auth-master
+      - evidence_data:/var/lib/contribution-ledger/evidence
+    restart: "no"
+  api:
+    <<: *runtime
+    environment: *settings
+    volumes:
+      - auth_master:/var/lib/contribution-ledger/auth-master:ro
+      - evidence_data:/var/lib/contribution-ledger/evidence
+    depends_on: {db: {condition: service_healthy}}
+    restart: "no"
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready',timeout=5)"]
+      interval: 5s
+      timeout: 6s
+      retries: 20
+  web:
+    image: contribution-ledger-web:0.16.2-phase16
+    build: {context: ., dockerfile: infra/web.Dockerfile, target: runtime}
+    environment:
+      CL_API_TARGET: http://api:8000
+      CL_BIND_HOST: 0.0.0.0
+      CL_WEB_ALLOWED_HOSTS: '["${CL_STAGING_HOST:?Configure an HTTPS hostname}","localhost","127.0.0.1"]'
+    depends_on: {api: {condition: service_healthy}}
+    networks: [private]
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    pids_limit: 128
+    mem_limit: 512m
+    restart: "no"
+  gateway:
+    image: caddy:2.11.4-alpine
+    environment:
+      CL_STAGING_HOST: ${CL_STAGING_HOST:?Configure an HTTPS hostname}
+      CL_STAGING_CIDRS: ${CL_STAGING_CIDRS:?Explicit approved client network ranges}
+    ports: ["${CL_STAGING_BIND:-127.0.0.1}:8443:8443"]
+    volumes:
+      - ./infra/Caddyfile.staging:/etc/caddy/Caddyfile:ro
+      - ./.local/staging/tls:/run/tls:ro
+    networks: [private]
+    depends_on: {web: {condition: service_started}}
+    read_only: true
+    tmpfs: [/data, /config, /tmp]
+    cap_drop: [ALL]
+    cap_add: [DAC_OVERRIDE]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 128
+    mem_limit: 256m
+    restart: "no"
+networks:
+  private: {internal: true}
+volumes:
+  postgres_data:
+  evidence_data:
+  auth_master:

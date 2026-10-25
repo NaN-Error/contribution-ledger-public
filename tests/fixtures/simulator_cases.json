@@ -1,0 +1,828 @@
+{
+  "schema_version": 1,
+  "synthetic_only": true,
+  "fixtures": [
+    {
+      "id": "five_person_ten_thousand",
+      "description": "five person ten thousand",
+      "input": {
+        "amount_cents": 1000000,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 7000,
+            "recipients": [
+              {
+                "user_id": "alice",
+                "atoms": 350
+              },
+              {
+                "user_id": "bob",
+                "atoms": 250
+              },
+              {
+                "user_id": "carla",
+                "atoms": 200
+              },
+              {
+                "user_id": "diego",
+                "atoms": 150
+              },
+              {
+                "user_id": "erin",
+                "atoms": 50
+              }
+            ],
+            "blocked_by_dispute": false
+          },
+          {
+            "key": "ongoing",
+            "weight_bps": 3000,
+            "recipients": [
+              {
+                "user_id": "alice",
+                "atoms": 100
+              },
+              {
+                "user_id": "bob",
+                "atoms": 200
+              },
+              {
+                "user_id": "carla",
+                "atoms": 200
+              },
+              {
+                "user_id": "diego",
+                "atoms": 200
+              },
+              {
+                "user_id": "erin",
+                "atoms": 300
+              }
+            ],
+            "blocked_by_dispute": false
+          }
+        ]
+      },
+      "expected_people_cents": {
+        "alice": 275000,
+        "bob": 235000,
+        "carla": 200000,
+        "diego": 165000,
+        "erin": 125000
+      },
+      "expected_unallocated_cents": 0,
+      "expected_status": "calculated"
+    },
+    {
+      "id": "one_cent_three_equal",
+      "description": "one cent three equal",
+      "input": {
+        "amount_cents": 1,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 10000,
+            "recipients": [
+              {
+                "user_id": "a",
+                "atoms": 1
+              },
+              {
+                "user_id": "b",
+                "atoms": 1
+              },
+              {
+                "user_id": "c",
+                "atoms": 1
+              }
+            ],
+            "blocked_by_dispute": false
+          }
+        ]
+      },
+      "expected_people_cents": {
+        "a": 1,
+        "b": 0,
+        "c": 0
+      },
+      "expected_unallocated_cents": 0,
+      "expected_status": "calculated"
+    },
+    {
+      "id": "two_cents_three_equal",
+      "description": "two cents three equal",
+      "input": {
+        "amount_cents": 2,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 10000,
+            "recipients": [
+              {
+                "user_id": "a",
+                "atoms": 1
+              },
+              {
+                "user_id": "b",
+                "atoms": 1
+              },
+              {
+                "user_id": "c",
+                "atoms": 1
+              }
+            ],
+            "blocked_by_dispute": false
+          }
+        ]
+      },
+      "expected_people_cents": {
+        "a": 1,
+        "b": 1,
+        "c": 0
+      },
+      "expected_unallocated_cents": 0,
+      "expected_status": "calculated"
+    },
+    {
+      "id": "uneven_two_to_one",
+      "description": "uneven two to one",
+      "input": {
+        "amount_cents": 100,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 10000,
+            "recipients": [
+              {
+                "user_id": "a",
+                "atoms": 2
+              },
+              {
+                "user_id": "b",
+                "atoms": 1
+              }
+            ],
+            "blocked_by_dispute": false
+          }
+        ]
+      },
+      "expected_people_cents": {
+        "a": 67,
+        "b": 33
+      },
+      "expected_unallocated_cents": 0,
+      "expected_status": "calculated"
+    },
+    {
+      "id": "pool_tie_uses_stable_key",
+      "description": "pool tie uses stable key",
+      "input": {
+        "amount_cents": 1,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 5000,
+            "recipients": [
+              {
+                "user_id": "a",
+                "atoms": 1
+              }
+            ],
+            "blocked_by_dispute": false
+          },
+          {
+            "key": "ongoing",
+            "weight_bps": 5000,
+            "recipients": [
+              {
+                "user_id": "b",
+                "atoms": 1
+              }
+            ],
+            "blocked_by_dispute": false
+          }
+        ]
+      },
+      "expected_people_cents": {
+        "a": 0,
+        "b": 1
+      },
+      "expected_unallocated_cents": 0,
+      "expected_status": "calculated"
+    },
+    {
+      "id": "three_cents_seventy_thirty",
+      "description": "three cents seventy thirty",
+      "input": {
+        "amount_cents": 3,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 7000,
+            "recipients": [
+              {
+                "user_id": "a",
+                "atoms": 1
+              }
+            ],
+            "blocked_by_dispute": false
+          },
+          {
+            "key": "ongoing",
+            "weight_bps": 3000,
+            "recipients": [
+              {
+                "user_id": "b",
+                "atoms": 1
+              }
+            ],
+            "blocked_by_dispute": false
+          }
+        ]
+      },
+      "expected_people_cents": {
+        "a": 2,
+        "b": 1
+      },
+      "expected_unallocated_cents": 0,
+      "expected_status": "calculated"
+    },
+    {
+      "id": "one_recipient",
+      "description": "one recipient",
+      "input": {
+        "amount_cents": 10000,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 10000,
+            "recipients": [
+              {
+                "user_id": "a",
+                "atoms": 37
+              }
+            ],
+            "blocked_by_dispute": false
+          }
+        ]
+      },
+      "expected_people_cents": {
+        "a": 10000
+      },
+      "expected_unallocated_cents": 0,
+      "expected_status": "calculated"
+    },
+    {
+      "id": "zero_with_valid_credit",
+      "description": "zero with valid credit",
+      "input": {
+        "amount_cents": 0,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 10000,
+            "recipients": [
+              {
+                "user_id": "a",
+                "atoms": 1
+              },
+              {
+                "user_id": "b",
+                "atoms": 2
+              }
+            ],
+            "blocked_by_dispute": false
+          }
+        ]
+      },
+      "expected_people_cents": {
+        "a": 0,
+        "b": 0
+      },
+      "expected_unallocated_cents": 0,
+      "expected_status": "calculated"
+    },
+    {
+      "id": "empty_release_no_owner_fallback",
+      "description": "empty release no owner fallback",
+      "input": {
+        "amount_cents": 1,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 10000,
+            "recipients": [],
+            "blocked_by_dispute": false
+          }
+        ]
+      },
+      "expected_people_cents": {},
+      "expected_unallocated_cents": 1,
+      "expected_status": "blocked"
+    },
+    {
+      "id": "empty_ongoing_no_reweighting",
+      "description": "empty ongoing no reweighting",
+      "input": {
+        "amount_cents": 100,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 7000,
+            "recipients": [
+              {
+                "user_id": "a",
+                "atoms": 1
+              }
+            ],
+            "blocked_by_dispute": false
+          },
+          {
+            "key": "ongoing",
+            "weight_bps": 3000,
+            "recipients": [],
+            "blocked_by_dispute": false
+          }
+        ]
+      },
+      "expected_people_cents": {
+        "a": 70
+      },
+      "expected_unallocated_cents": 30,
+      "expected_status": "blocked"
+    },
+    {
+      "id": "disputed_release_no_reweighting",
+      "description": "disputed release no reweighting",
+      "input": {
+        "amount_cents": 100,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 7000,
+            "recipients": [
+              {
+                "user_id": "a",
+                "atoms": 1
+              }
+            ],
+            "blocked_by_dispute": true
+          },
+          {
+            "key": "ongoing",
+            "weight_bps": 3000,
+            "recipients": [
+              {
+                "user_id": "b",
+                "atoms": 1
+              }
+            ],
+            "blocked_by_dispute": false
+          }
+        ]
+      },
+      "expected_people_cents": {
+        "b": 30
+      },
+      "expected_unallocated_cents": 70,
+      "expected_status": "blocked"
+    },
+    {
+      "id": "both_pools_disputed",
+      "description": "both pools disputed",
+      "input": {
+        "amount_cents": 100,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 7000,
+            "recipients": [
+              {
+                "user_id": "a",
+                "atoms": 1
+              }
+            ],
+            "blocked_by_dispute": true
+          },
+          {
+            "key": "ongoing",
+            "weight_bps": 3000,
+            "recipients": [
+              {
+                "user_id": "b",
+                "atoms": 1
+              }
+            ],
+            "blocked_by_dispute": true
+          }
+        ]
+      },
+      "expected_people_cents": {},
+      "expected_unallocated_cents": 100,
+      "expected_status": "blocked"
+    },
+    {
+      "id": "zero_weight_person_never_rounds_up",
+      "description": "zero weight person never rounds up",
+      "input": {
+        "amount_cents": 1,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 10000,
+            "recipients": [
+              {
+                "user_id": "a",
+                "atoms": 0
+              },
+              {
+                "user_id": "b",
+                "atoms": 1
+              }
+            ],
+            "blocked_by_dispute": false
+          }
+        ]
+      },
+      "expected_people_cents": {
+        "a": 0,
+        "b": 1
+      },
+      "expected_unallocated_cents": 0,
+      "expected_status": "calculated"
+    },
+    {
+      "id": "art_and_code_same_accounting",
+      "description": "Recognized art and code use the same accepted-unit arithmetic; role labels do not receive hidden multipliers.",
+      "input": {
+        "amount_cents": 100,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 10000,
+            "recipients": [
+              {
+                "user_id": "artist",
+                "atoms": 60
+              },
+              {
+                "user_id": "developer",
+                "atoms": 40
+              }
+            ],
+            "blocked_by_dispute": false
+          }
+        ]
+      },
+      "expected_people_cents": {
+        "artist": 60,
+        "developer": 40
+      },
+      "expected_unallocated_cents": 0,
+      "expected_status": "calculated"
+    },
+    {
+      "id": "attribution_correction_same_total",
+      "description": "attribution correction same total",
+      "input": {
+        "amount_cents": 100,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 10000,
+            "recipients": [
+              {
+                "user_id": "alice",
+                "atoms": 60
+              },
+              {
+                "user_id": "bob",
+                "atoms": 40
+              }
+            ],
+            "blocked_by_dispute": false
+          }
+        ]
+      },
+      "expected_people_cents": {
+        "alice": 60,
+        "bob": 40
+      },
+      "expected_unallocated_cents": 0,
+      "expected_status": "calculated"
+    },
+    {
+      "id": "departed_member_retains_credit",
+      "description": "departed member retains credit",
+      "input": {
+        "amount_cents": 100,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 10000,
+            "recipients": [
+              {
+                "user_id": "departed",
+                "atoms": 25
+              },
+              {
+                "user_id": "remaining",
+                "atoms": 75
+              }
+            ],
+            "blocked_by_dispute": false
+          }
+        ]
+      },
+      "expected_people_cents": {
+        "departed": 25,
+        "remaining": 75
+      },
+      "expected_unallocated_cents": 0,
+      "expected_status": "calculated"
+    },
+    {
+      "id": "unfinished_work_not_in_denominator",
+      "description": "Only accepted 60 units are an engine input; pending 40 remain outside it (API tests also verify this).",
+      "input": {
+        "amount_cents": 100,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 10000,
+            "recipients": [
+              {
+                "user_id": "accepted",
+                "atoms": 60000
+              }
+            ],
+            "blocked_by_dispute": false
+          }
+        ]
+      },
+      "expected_people_cents": {
+        "accepted": 100
+      },
+      "expected_unallocated_cents": 0,
+      "expected_status": "calculated"
+    },
+    {
+      "id": "accepted_research_has_credit",
+      "description": "accepted research has credit",
+      "input": {
+        "amount_cents": 100,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 10000,
+            "recipients": [
+              {
+                "user_id": "prototype",
+                "atoms": 60
+              },
+              {
+                "user_id": "qa",
+                "atoms": 40
+              }
+            ],
+            "blocked_by_dispute": false
+          }
+        ]
+      },
+      "expected_people_cents": {
+        "prototype": 60,
+        "qa": 40
+      },
+      "expected_unallocated_cents": 0,
+      "expected_status": "calculated"
+    },
+    {
+      "id": "display_names_do_not_break_ties",
+      "description": "Person names do not enter the engine, even when two people have the same display name.",
+      "input": {
+        "amount_cents": 1,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 10000,
+            "recipients": [
+              {
+                "user_id": "id_a",
+                "atoms": 1
+              },
+              {
+                "user_id": "id_b",
+                "atoms": 1
+              }
+            ],
+            "blocked_by_dispute": false
+          }
+        ]
+      },
+      "expected_people_cents": {
+        "id_a": 1,
+        "id_b": 0
+      },
+      "expected_unallocated_cents": 0,
+      "expected_status": "calculated"
+    },
+    {
+      "id": "maximum_supported_money",
+      "description": "maximum supported money",
+      "input": {
+        "amount_cents": 1000000000000,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 10000,
+            "recipients": [
+              {
+                "user_id": "a",
+                "atoms": 1
+              },
+              {
+                "user_id": "b",
+                "atoms": 3
+              }
+            ],
+            "blocked_by_dispute": false
+          }
+        ]
+      },
+      "expected_people_cents": {
+        "a": 250000000000,
+        "b": 750000000000
+      },
+      "expected_unallocated_cents": 0,
+      "expected_status": "calculated"
+    },
+    {
+      "id": "ten_cents_three_equal",
+      "description": "ten cents three equal",
+      "input": {
+        "amount_cents": 10,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 10000,
+            "recipients": [
+              {
+                "user_id": "a",
+                "atoms": 1
+              },
+              {
+                "user_id": "b",
+                "atoms": 1
+              },
+              {
+                "user_id": "c",
+                "atoms": 1
+              }
+            ],
+            "blocked_by_dispute": false
+          }
+        ]
+      },
+      "expected_people_cents": {
+        "a": 4,
+        "b": 3,
+        "c": 3
+      },
+      "expected_unallocated_cents": 0,
+      "expected_status": "calculated"
+    },
+    {
+      "id": "zero_cent_nonempty_ongoing",
+      "description": "zero cent nonempty ongoing",
+      "input": {
+        "amount_cents": 1,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 7000,
+            "recipients": [
+              {
+                "user_id": "a",
+                "atoms": 1
+              }
+            ],
+            "blocked_by_dispute": false
+          },
+          {
+            "key": "ongoing",
+            "weight_bps": 3000,
+            "recipients": [
+              {
+                "user_id": "b",
+                "atoms": 1
+              }
+            ],
+            "blocked_by_dispute": false
+          }
+        ]
+      },
+      "expected_people_cents": {
+        "a": 1,
+        "b": 0
+      },
+      "expected_unallocated_cents": 0,
+      "expected_status": "calculated"
+    },
+    {
+      "id": "two_stage_rounding_and_same_person",
+      "description": "two stage rounding and same person",
+      "input": {
+        "amount_cents": 101,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 6000,
+            "recipients": [
+              {
+                "user_id": "a",
+                "atoms": 1
+              },
+              {
+                "user_id": "b",
+                "atoms": 1
+              }
+            ],
+            "blocked_by_dispute": false
+          },
+          {
+            "key": "ongoing",
+            "weight_bps": 4000,
+            "recipients": [
+              {
+                "user_id": "b",
+                "atoms": 1
+              }
+            ],
+            "blocked_by_dispute": false
+          }
+        ]
+      },
+      "expected_people_cents": {
+        "a": 31,
+        "b": 70
+      },
+      "expected_unallocated_cents": 0,
+      "expected_status": "calculated"
+    },
+    {
+      "id": "zero_still_has_undefined_empty_denominator",
+      "description": "zero still has undefined empty denominator",
+      "input": {
+        "amount_cents": 0,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 10000,
+            "recipients": [],
+            "blocked_by_dispute": false
+          }
+        ]
+      },
+      "expected_people_cents": {},
+      "expected_unallocated_cents": 0,
+      "expected_status": "blocked"
+    },
+    {
+      "id": "same_person_two_pools",
+      "description": "same person two pools",
+      "input": {
+        "amount_cents": 100,
+        "pools": [
+          {
+            "key": "release",
+            "weight_bps": 8000,
+            "recipients": [
+              {
+                "user_id": "a",
+                "atoms": 1
+              }
+            ],
+            "blocked_by_dispute": false
+          },
+          {
+            "key": "ongoing",
+            "weight_bps": 2000,
+            "recipients": [
+              {
+                "user_id": "a",
+                "atoms": 5
+              }
+            ],
+            "blocked_by_dispute": false
+          }
+        ]
+      },
+      "expected_people_cents": {
+        "a": 100
+      },
+      "expected_unallocated_cents": 0,
+      "expected_status": "calculated"
+    }
+  ]
+}
