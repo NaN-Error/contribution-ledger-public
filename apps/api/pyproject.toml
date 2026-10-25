@@ -17,7 +17,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-jobs = ["celery==5.6.3", "redis==6.4.0"]
+jobs = ["celery==5.6.3", "redis==8.1.0"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
