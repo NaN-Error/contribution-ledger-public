@@ -10,7 +10,7 @@ dependencies = [
   "pydantic-settings==2.14.2",
   "SQLAlchemy==2.0.50",
   "alembic==1.18.4",
-  "psycopg[binary]==3.3.3",
+  "psycopg[binary]==3.3.6",
   "Pillow==13.0.0",
   "boto3==1.43.18",
   "cryptography==50.0.0",
